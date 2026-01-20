@@ -1,0 +1,55 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+class AppTheme {
+  static const Color primaryColor = Color(0xFF6A4616);
+  static const Color secColor = Color(0xFFFFFFFF);
+  static const Color blackColor = Color(0xFF040404);
+  static const Color greyColor = Color(0xFF757575);
+  static const Color textWhiteColor = Color(0xFFF6F6F6);
+  static const Color textGreyColor = Color(0xFFCECECE);
+  static const Color textBlackColor = Color(0xFF000000);
+
+  static ThemeData lightTheme = ThemeData(
+    scaffoldBackgroundColor: AppTheme.secColor,
+    textTheme: TextTheme(
+      headlineMedium: GoogleFonts.nunito(
+        fontSize: 36,
+        color: AppTheme.secColor,
+        fontWeight: FontWeight.bold,
+      ),
+      headlineSmall: GoogleFonts.nunito(
+        fontSize: 28,
+        color: AppTheme.textWhiteColor,
+        fontWeight: FontWeight.bold,
+      ),
+      bodyLarge: GoogleFonts.nunito(
+        fontSize: 20,
+        color: AppTheme.textGreyColor,
+        fontWeight: FontWeight.w600,
+      ),
+      bodyMedium: GoogleFonts.nunito(
+        fontSize: 16,
+        color: AppTheme.textBlackColor,
+        fontWeight: FontWeight.w400,
+      ),
+      bodySmall: GoogleFonts.nunito(
+        fontSize: 14,
+        color: AppTheme.textBlackColor,
+        fontWeight: FontWeight.w300,
+      ),
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+      backgroundColor: AppTheme.primaryColor,
+      foregroundColor: AppTheme.secColor
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: AppTheme.primaryColor,
+          foregroundColor: AppTheme.secColor,
+      )
+    )
+  );
+}
