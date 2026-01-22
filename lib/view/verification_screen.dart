@@ -1,4 +1,5 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/view/home_page_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
@@ -76,7 +77,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   Spacer(),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(onPressed: (){}, child: Padding(
+                    child: ElevatedButton(onPressed: (){
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePageScreen(),));
+                    }, child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Text(AppConstants.msContinueTxt,style: Theme.of(context).textTheme.headlineSmall,),
                     )),

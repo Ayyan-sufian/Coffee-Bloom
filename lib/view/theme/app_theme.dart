@@ -7,10 +7,13 @@ class AppTheme {
   static const Color primaryColor = Color(0xFF6A4616);
   static const Color secColor = Color(0xFFFFFFFF);
   static const Color blackColor = Color(0xFF040404);
+  static const Color iconColor = Color(0xFFD2C7B9);
   static const Color greyColor = Color(0xFF757575);
+  static const Color errorColor = Color(0xFFDF1515);
   static const Color textWhiteColor = Color(0xFFF6F6F6);
   static const Color textGreyColor = Color(0xFFCECECE);
   static const Color textBlackColor = Color(0xFF000000);
+
 
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppTheme.secColor,
@@ -50,6 +53,17 @@ class AppTheme {
           backgroundColor: AppTheme.primaryColor,
           foregroundColor: AppTheme.secColor,
       )
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: AppTheme.greyColor.withAlpha(60),
+      errorStyle: TextStyle(
+        color: AppTheme.errorColor
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: AppTheme.errorColor),
+        borderRadius: BorderRadius.circular(10),
+      ),
     )
   );
 }

@@ -1,4 +1,8 @@
 class AppConstants {
+  ///base url
+  static const String baseUrl = "https://shawanna-unanswering-balsamically.ngrok-free.dev/api";
+
+
   /// Splash screen Text
   static const String splashTxt = "CoffeeBloom";
 
@@ -10,7 +14,7 @@ class AppConstants {
   static const String skipBtnTxt = "SKIP";
 
   /// Map Screen
-  static const String msTextFieldTxt = "enter an Address, Zip or City";
+  static const String msTextFieldTxt = "Enter an Address, Zip or City";
   static const String msLocationTxt = "53rd and Broadway\nCyder ct lane\nNew Jersey, NJ 10189\n50m";
   static const String msGetDirTxt = "Get Directions";
   static const String msOpenHrsTxt = "Opening hours";
@@ -26,16 +30,44 @@ class AppConstants {
   static const String msContinueTxt = "Continue";
 
   /// Sign In screen
-  static const String ssEnterNumTxt = "Enter your phone number";
-  static const String ssVerifyCodeTxt = "We will send you a verification code";
+  static const String ssHelloTxt = "Hello!";
+  static const String ssStartedTxt = "Sign Up to get started";
+  static const String ssNameTxt = "Name*";
+  static const String ssEmailTxt = "Email*";
+  static const String ssPasswordTxt = "Password*";
+  static const String ssConfirmPassTxt = "Confirm Password*";
+  static const String ssAddressTxt = "Address*";
+  static const String ssAlreadyAccTxt = "Already have an account?";
+  static const String ssSignInTxt = "Sign up";
+  static const String ssErrorTxt = "Password is not correct!";
+  static const String ssAllErrorTxt = "Please enter the given requirement!";
   static const String ssByClickTxt = "By clicking on ‘Continue”, you are agreeing to our Terms & Conditions.";
-  static const String ss92Txt = "+92";
 
   /// verification code
   static const String vsVerifyNumTxt = "Verify your mobile number";
   static const String vsEnterCodeTxt = "Enter the verification code sent to you";
   static const String vsDidntGetTxt = "Didn’t get the code? ";
   static const String vsResendCodeTxt = "Resend Code";
+
+  /// Home page screen
+  static const String hpHomeText = "Home";
+  static const String hpSettingsText = "Settings";
+  static const String hpHistoryText = "Order History";
+  static const String hpRewardsText = "Rewards";
+  static const String hpPromoText = "Promo code";
+  static const String hpSupportText = "Support";
+  static const String hpContactUsText = "Contact Us";
+  static const String hpLogoutText = "Logout";
+  static const String hpHiText = "Hi, Beatrice";
+  static const String hpHelloThereText = "Hello There,";
+  static const String hpLetsDrinkText = "Let's Drink Coffee";
+  static const String hpHintText = "What are you looking for?Let's Drink Coffee";
+  static const String hpCategoriesTxt = "Categories";
+  static const String hpHotCoffeeTxt = "Hot Coffee Drinks";
+  static const String hpFreshTxt = "Freshly made hot coffees";
+  static const String hpTodaySpecTxt = "Today’s Specials";
+  static const String hpPopularTxt = "Popular Coffee";
+  static const String hpTrendingTxt = "Trending Coffee";
 }
 
 class ImagesPath {
@@ -46,4 +78,8 @@ class ImagesPath {
   /// Sign In screen
   static const String signInImg = "assets/img/sigin_in_pic.png";
   static const String verifyCodeImg = "assets/img/verify_code.png";
+
+  ///
+  static const String coffee1Img = "assets/img/coffee_slider1.png";
+  static const String coffee2Img = "assets/img/coffee_slider2.png";
 }
