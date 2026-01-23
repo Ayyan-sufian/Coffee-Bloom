@@ -84,7 +84,7 @@ class _MapScreenState extends State<MapScreen> {
                         ),
                       ],
                     ),
-                    SizedBox(height: 32),
+                    SizedBox(height: 22),
                     Text(
                       AppConstants.msOpenHrsTxt,
                       style: GoogleFonts.offside(
@@ -92,7 +92,7 @@ class _MapScreenState extends State<MapScreen> {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    SizedBox(height: 24),
+                    SizedBox(height: 14),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -219,9 +219,9 @@ class _MapScreenState extends State<MapScreen> {
                         SizedBox(width: 50),
                       ],
                     ),
-                    SizedBox(height: 35,),
+                    SizedBox(height: 25,),
                     SizedBox(
-                      height: 50,
+                      height: 60,
                       width: double.infinity,
                       child: ElevatedButton(
                         onPressed: () {
@@ -232,7 +232,7 @@ class _MapScreenState extends State<MapScreen> {
                             ),
                           );
                         },
-                        child: Text(AppConstants.msContinueTxt),
+                        child: Text(AppConstants.msContinueTxt, style: Theme.of(context).textTheme.headlineMedium,),
                       ),
                     ),
                   ],

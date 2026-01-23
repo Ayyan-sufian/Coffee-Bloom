@@ -10,6 +10,7 @@ class AppTheme {
   static const Color iconColor = Color(0xFFD2C7B9);
   static const Color greyColor = Color(0xFF757575);
   static const Color errorColor = Color(0xFFDF1515);
+  static const Color chipColor = Color(0xFFD9D9D9);
   static const Color textWhiteColor = Color(0xFFF6F6F6);
   static const Color textGreyColor = Color(0xFFCECECE);
   static const Color textBlackColor = Color(0xFF000000);

@@ -68,6 +68,19 @@ class AppConstants {
   static const String hpTodaySpecTxt = "Today’s Specials";
   static const String hpPopularTxt = "Popular Coffee";
   static const String hpTrendingTxt = "Trending Coffee";
+
+  /// Filter screen
+  static const String fsFilterTxt = "Filters";
+  static const String fsClearTxt = "Clear filter";
+  static const String fsSelectTxt = "Select categories";
+  static const String fsTopicsTxt = "Sort by Topics";
+  static const String fsKeywordsTxt = "Sort by Keywords";
+  static const String fsApplyTxt = "Apply filter";
+
+  /// Fav screen
+  static const String fvFavoriteTxt = "Favorites";
+  static const String fvAddToCartTxt = "Add to cart";
+  static const String fvRemoveTxt = "Remove";
 }
 
 class ImagesPath {
