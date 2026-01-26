@@ -74,6 +74,13 @@ class _HomePageScreenState extends State<HomePageScreen> {
   ];
 
   @override
+  void dispose() {
+    // TODO: implement dispose
+    controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -128,8 +135,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                         setState(() {
                           _selectedIndex = index;
                         });
-                        Navigator.pop(context); // close drawer
-                        // Add navigation logic here based on index
+                        Navigator.pop(context);
                       },
                     ),
                   );
@@ -150,8 +156,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 ),
              ),
               onTap: () {
-                Navigator.pop(context); // close drawer
-                // Add navigation logic here based on index
+                Navigator.pop(context);
               },
             ),
           ],
@@ -265,7 +270,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   ],
                                 ),
                                 child: Image.asset(
-                                  images[index],
+                                  images[index],cacheHeight: 800, cacheWidth: 800,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -387,7 +392,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.asset(
-                                  item['img'],
+                                  item['img'],cacheHeight: 800, cacheWidth: 800,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -467,24 +472,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  Widget _buildDrawerItem({
-    required IconData icon,
-    required String text,
-    required VoidCallback onTap,
-  }) {
-    return ListTile(
-      leading: Icon(icon, color: AppTheme.secColor),
-      title: Text(
-        text,
-        style: TextStyle(
-          color: AppTheme.textBlackColor,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-      onTap: onTap,
     );
   }
 

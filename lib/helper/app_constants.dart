@@ -2,6 +2,7 @@ class AppConstants {
   ///base url
   static const String baseUrl = "https://coffeebloom-api.vercel.app";
   static const String signUpEnd = "/auth/signup";
+  static const String loginEnd = "/auth/login";
 
 
   /// Splash screen Text
@@ -30,6 +31,13 @@ class AppConstants {
   static const String msSunTimeTxt = "07:00AM - 08:00PM";
   static const String msContinueTxt = "Continue";
 
+  /// Login screen
+  static const String lsAgainTxt = "Again?";
+  static const String lsMissTxt = "Welcome Back you've been missed";
+  static const String lsDoNotAccTxt = "Don't have account?";
+  static const String lsSignupTxt = "Sign up";
+  static const String lsForgetTxt = "Forget Password";
+
   /// Sign In screen
   static const String ssHelloTxt = "Hello!";
   static const String ssStartedTxt = "Sign Up to get started";
@@ -39,7 +47,7 @@ class AppConstants {
   static const String ssConfirmPassTxt = "Confirm Password*";
   static const String ssAddressTxt = "Address*";
   static const String ssAlreadyAccTxt = "Already have an account?";
-  static const String ssSignInTxt = "Sign up";
+  static const String ssLogInTxt = "Log In";
   static const String ssErrorTxt = "Password is not correct!";
   static const String ssAllErrorTxt = "Please enter the given requirement!";
   static const String ssByClickTxt = "By clicking on ‘Continue”, you are agreeing to our Terms & Conditions.";
@@ -96,4 +104,7 @@ class ImagesPath {
   ///
   static const String coffee1Img = "assets/img/coffee_slider1.png";
   static const String coffee2Img = "assets/img/coffee_slider2.png";
+
+  /// Login screen image
+  static const String loginImg = "assets/img/login_coffee.png";
 }

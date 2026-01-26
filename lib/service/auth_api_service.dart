@@ -9,16 +9,24 @@ class AuthApiService {
     required String endPoint,
   }) async {
     try {
-      final response = await _dio.post(endPoint, data: data);
+      final response = await _dio.post(data: data, endPoint);
       return response;
     }
     catch (e){
-      throw Exception("This is  error : $e");
+      throw Exception("This is  result : $e");
+    }
+  }
+  
+  Future<dynamic> callLoginApi({
+    required Map<String, dynamic> data,
+    required String endpoint
+}) async{
+    try{
+      final response = await _dio.post(data: data, endpoint);
+      return response;
+    } catch (e) {
+      throw Exception("This is  result : $e");
     }
   }
 }
 
-
-// } catch (e) {
-//   throw Exception('Unexpected error: $e');
-// }

@@ -1,5 +1,6 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
-import 'package:coffee_bloom/view/sigin_in_screen.dart';
+import 'package:coffee_bloom/view/login_screen.dart';
+import 'package:coffee_bloom/view/sign_up_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -228,7 +229,7 @@ class _MapScreenState extends State<MapScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignInScreen(),
+                              builder: (context) => LoginScreen(),
                             ),
                           );
                         },

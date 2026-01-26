@@ -1,20 +1,19 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
 import 'package:coffee_bloom/model_view/auth_view_model.dart';
-import 'package:coffee_bloom/view/home_nav_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:coffee_bloom/view/verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
@@ -50,33 +49,22 @@ class _SignInScreenState extends State<SignInScreen> {
         bottom: false,
         child: Padding(
           padding: const EdgeInsets.all(24),
-          child: SingleChildScrollView(
-            child: Column(
+          child: ListView(
+            padding: EdgeInsets.only(bottom: 24),
+            children: [
+              Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomeNavScreen(),
-                          ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppTheme.secColor,
-                        foregroundColor: AppTheme.primaryColor,
-                      ),
-                      child: Text(AppConstants.skipBtnTxt),
-                    ),
+                    IconButton(onPressed: () {
+                      Navigator.pop(context);
+                    }, icon: Icon(Icons.arrow_back_ios))
                   ],
                 ),
                 SizedBox(
                   height: 120,
                   width: 120,
-                  child: Image.asset(ImagesPath.signInImg, fit: BoxFit.cover),
+                  child: Image.asset(ImagesPath.signInImg,cacheHeight: 800, cacheWidth: 800, fit: BoxFit.cover),
                 ),
                 SizedBox(height: 18),
                 Text(
@@ -291,7 +279,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           TextButton(
                             onPressed: () {},
                             child: Text(
-                              AppConstants.ssSignInTxt,
+                              AppConstants.ssLogInTxt,
                               style: Theme
                                   .of(context)
                                   .textTheme
@@ -366,7 +354,7 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 )
               ],
-            ),
+            ),]
           ),
         ),
       ),

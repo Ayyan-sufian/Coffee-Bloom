@@ -1,0 +1,257 @@
+import 'package:coffee_bloom/model_view/auth_view_model.dart';
+import 'package:coffee_bloom/view/sign_up_screen.dart';
+import 'package:coffee_bloom/view/theme/app_theme.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../helper/app_constants.dart';
+import 'home_nav_screen.dart';
+
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
+  TextEditingController lEmailController = TextEditingController();
+  TextEditingController lPassController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+
+  bool isVisible = true;
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    lEmailController.dispose();
+    lPassController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final authVM = context.read<AuthViewModel>();
+    return Scaffold(
+      body: SafeArea(
+        child: SizedBox(
+          child: ListView(
+            padding: EdgeInsets.all(24),
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => HomeNavScreen(),
+                        ),
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppTheme.secColor,
+                      foregroundColor: AppTheme.primaryColor,
+                    ),
+                    child: Text(AppConstants.skipBtnTxt),
+                  ),
+                ],
+              ),
+              SizedBox(height: 18),
+              SizedBox(
+                height: 120,
+                width: 120,
+                child: Image.asset(
+                  ImagesPath.loginImg,
+                  cacheWidth: 800,
+                  cacheHeight: 800,
+                ),
+              ),
+              SizedBox(height: 24),
+              Text(
+                AppConstants.ssHelloTxt,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: AppTheme.blackColor,
+                  fontSize: 42,
+                ),
+              ),
+              Text(
+                AppConstants.lsAgainTxt,
+                style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  color: AppTheme.primaryColor,
+                  fontSize: 42,
+                ),
+              ),
+              SizedBox(height: 12),
+              Text(
+                AppConstants.lsMissTxt,
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyLarge!.copyWith(color: AppTheme.greyColor),
+              ),
+              SizedBox(height: 22),
+              Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppConstants.ssEmailTxt,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    TextFormField(
+                      controller: lEmailController,
+                      keyboardType: TextInputType.emailAddress,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return AppConstants.ssAllErrorTxt;
+                        }
+                        return null;
+                      },
+                      style: TextStyle(color: AppTheme.primaryColor),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppTheme.greyColor.withAlpha(60),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            AppConstants.lsForgetTxt,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      AppConstants.ssPasswordTxt,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    TextFormField(
+                      controller: lPassController,
+                      obscureText: isVisible,
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          return AppConstants.ssAllErrorTxt;
+                        }
+                        return null;
+                      },
+                      style: TextStyle(color: AppTheme.primaryColor),
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: AppTheme.greyColor.withAlpha(60),
+                        suffixIcon: IconButton(
+                          onPressed: () {
+                            setState(() {
+                              isVisible = !isVisible;
+                            });
+                          },
+                          icon: isVisible
+                              ? Icon(
+                                  Icons.visibility_off_outlined,
+                                  color: AppTheme.primaryColor,
+                                )
+                              : Icon(
+                                  Icons.visibility,
+                                  color: AppTheme.primaryColor,
+                                ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          borderSide: BorderSide.none,
+                        ),
+                      ),
+                    ),
+
+                    SizedBox(height: 18),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          AppConstants.lsDoNotAccTxt,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SignUpScreen(),
+                              ),
+                            );
+                          },
+                          child: Text(
+                            AppConstants.lsSignupTxt,
+                            style: Theme.of(context).textTheme.bodySmall!
+                                .copyWith(color: AppTheme.primaryColor),
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: size.height * 0.1),
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: authVM.isLoading
+                            ? null
+                            : () async {
+                                print("Calling api");
+
+                                if (_formKey.currentState!.validate()) {
+                                  final data = {
+                                    "email": lEmailController.text.trim(),
+                                    "password": lPassController.text.trim(),
+                                  };
+                                  await authVM.login(data: data);
+
+                                  if (!mounted) return;
+
+                                  print("Called api");
+
+                                  print('SIGNUP RESPONSE IS NULL? ${authVM
+                                      .loginResponse == null}');
+                                  print('ERROR: ${authVM.error}');
+                                  if (authVM.loginResponse != null) {
+                                    Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => HomeNavScreen(),
+                                      ),
+                                    );
+                                  }
+                                }
+                              },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          child: authVM.isLoading
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white,
+                                )
+                              : Text(
+                                  AppConstants.msContinueTxt,
+                                  style: Theme.of(
+                                    context,
+                                  ).textTheme.headlineSmall,
+                                ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
