@@ -9,7 +9,7 @@ class AuthApiService {
     required String endPoint,
   }) async {
     try {
-      final response = await _dio.post(data: data, endPoint);
+      final response = await _dio.post(endPoint, data: data);
       return response;
     }
     catch (e){

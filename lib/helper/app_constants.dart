@@ -1,6 +1,7 @@
 class AppConstants {
   ///base url
-  static const String baseUrl = "https://shawanna-unanswering-balsamically.ngrok-free.dev/api";
+  static const String baseUrl = "https://coffeebloom-api.vercel.app";
+  static const String signUpEnd = "/auth/signup";
 
 
   /// Splash screen Text

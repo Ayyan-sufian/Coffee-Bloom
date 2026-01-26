@@ -1,3 +1,4 @@
+import 'package:coffee_bloom/helper/app_constants.dart';
 import 'package:coffee_bloom/model/signup_response.dart';
 import 'package:coffee_bloom/service/auth_api_service.dart';
 import 'package:dio/dio.dart';
@@ -18,7 +19,7 @@ class AuthViewModel extends ChangeNotifier {
     try {
       final response = await _authService.callSignUpApi(
         data: data,
-        endPoint: '/signup',
+        endPoint: AppConstants.signUpEnd,
       );
 
       if (response.statusCode == 200 || response.statusCode == 201) {

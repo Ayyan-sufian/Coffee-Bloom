@@ -11,10 +11,10 @@ class Global {
     dio = Dio(
         BaseOptions(
             baseUrl: AppConstants.baseUrl,
-            connectTimeout: Duration(milliseconds: 15),
-            receiveTimeout: Duration(milliseconds: 15),
+            connectTimeout: Duration(seconds: 30),
+            receiveTimeout: Duration(seconds: 30),
             headers: {
-              'content_type' : 'application/json'
+              'Content-Type' : 'application/json'
             }
         )
     );

@@ -44,7 +44,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authVM = context.watch<AuthViewModel>();
+    final authVM = context.read<AuthViewModel>();
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -81,15 +81,23 @@ class _SignInScreenState extends State<SignInScreen> {
                 SizedBox(height: 18),
                 Text(
                   AppConstants.ssHelloTxt,
-                  style: Theme.of(context).textTheme.headlineMedium!.copyWith(
+                  style: Theme
+                      .of(context)
+                      .textTheme
+                      .headlineMedium!
+                      .copyWith(
                     color: AppTheme.blackColor,
                   ),
                 ),
                 Text(
                   AppConstants.ssStartedTxt,
-                  style: Theme.of(
+                  style: Theme
+                      .of(
                     context,
-                  ).textTheme.bodyLarge!.copyWith(color: AppTheme.greyColor),
+                  )
+                      .textTheme
+                      .bodyLarge!
+                      .copyWith(color: AppTheme.greyColor),
                 ),
                 SizedBox(height: 22),
                 Form(
@@ -99,7 +107,10 @@ class _SignInScreenState extends State<SignInScreen> {
                     children: [
                       Text(
                         AppConstants.ssNameTxt,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       TextFormField(
                         controller: nameController,
@@ -122,7 +133,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 16),
                       Text(
                         AppConstants.ssEmailTxt,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       TextFormField(
                         controller: emailController,
@@ -146,7 +160,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 16),
                       Text(
                         AppConstants.ssPasswordTxt,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       TextFormField(
                         controller: passController,
@@ -169,13 +186,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             },
                             icon: isVisible
                                 ? Icon(
-                                    Icons.visibility_off_outlined,
-                                    color: AppTheme.primaryColor,
-                                  )
+                              Icons.visibility_off_outlined,
+                              color: AppTheme.primaryColor,
+                            )
                                 : Icon(
-                                    Icons.visibility,
-                                    color: AppTheme.primaryColor,
-                                  ),
+                              Icons.visibility,
+                              color: AppTheme.primaryColor,
+                            ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -186,7 +203,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 16),
                       Text(
                         AppConstants.ssConfirmPassTxt,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       TextFormField(
                         controller: confirmPassController,
@@ -202,7 +222,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           filled: true,
                           fillColor: AppTheme.greyColor.withAlpha(60),
                           errorText: isError ? AppConstants.ssErrorTxt : null,
-                          errorStyle: Theme.of(context).textTheme.bodyMedium!
+                          errorStyle: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium!
                               .copyWith(color: AppTheme.errorColor),
                           suffixIcon: IconButton(
                             onPressed: () {
@@ -212,13 +235,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             },
                             icon: isVisible2
                                 ? Icon(
-                                    Icons.visibility_off_outlined,
-                                    color: AppTheme.primaryColor,
-                                  )
+                              Icons.visibility_off_outlined,
+                              color: AppTheme.primaryColor,
+                            )
                                 : Icon(
-                                    Icons.visibility,
-                                    color: AppTheme.primaryColor,
-                                  ),
+                              Icons.visibility,
+                              color: AppTheme.primaryColor,
+                            ),
                           ),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -229,7 +252,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 16),
                       Text(
                         AppConstants.ssAddressTxt,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                       ),
                       TextFormField(
                         controller: addressController,
@@ -257,13 +283,19 @@ class _SignInScreenState extends State<SignInScreen> {
                         children: [
                           Text(
                             AppConstants.ssAlreadyAccTxt,
-                            style: Theme.of(context).textTheme.bodySmall,
+                            style: Theme
+                                .of(context)
+                                .textTheme
+                                .bodySmall,
                           ),
                           TextButton(
                             onPressed: () {},
                             child: Text(
                               AppConstants.ssSignInTxt,
-                              style: Theme.of(context).textTheme.bodySmall!
+                              style: Theme
+                                  .of(context)
+                                  .textTheme
+                                  .bodySmall!
                                   .copyWith(color: AppTheme.primaryColor),
                             ),
                           ),
@@ -272,7 +304,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       SizedBox(height: 16),
                       Text(
                         AppConstants.ssByClickTxt,
-                        style: Theme.of(context).textTheme.bodyMedium,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
                         textAlign: TextAlign.center,
                       ),
                     ],
@@ -286,41 +321,49 @@ class _SignInScreenState extends State<SignInScreen> {
                         ? null
                         : () async {
                       print("Calling api");
-                            showError();
+                      showError();
 
-                            if (isError != true &&
-                                _form.currentState!.validate()) {
-                              final data = {
-                                'name': nameController.text.trim(),
-                                'email': emailController.text.trim(),
-                                'password': passController.text.trim(),
-                                'address': addressController.text.trim(),
-                              };
-                              await authVM.signUp(data);
-                              print("Called api");
+                      if (isError != true &&
+                          _form.currentState!.validate()) {
+                        final data = {
+                            "name": nameController.text.trim(),
+                            "email": emailController.text.trim(),
+                            "password": passController.text.trim(),
+                            "confirm_password": confirmPassController.text.trim(),
+                            "address": addressController.text.trim()
+                          };
+                        await authVM.signUp(data);
 
-                              print('SIGNUP RESPONSE IS NULL? ${authVM.signupResponse == null}');
-                              print('ERROR: ${authVM.error}');
-                              if (authVM.signupResponse != null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => VerificationScreen(),
-                                  ),
-                                );
-                              }
-                            }
-                          },
+                        if(!mounted) return;
+
+                        print("Called api");
+
+                        print('SIGNUP RESPONSE IS NULL? ${authVM
+                            .signupResponse == null}');
+                        print('ERROR: ${authVM.error}');
+                        if (authVM.signupResponse != null) {
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => VerificationScreen(),
+                            ),
+                          );
+                        }
+                      }
+                    },
                     child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: authVM.isLoading
                           ? const CircularProgressIndicator(color: Colors.white)
                           : Text(
                         AppConstants.msContinueTxt,
-                        style: Theme.of(context).textTheme.headlineSmall,
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .headlineSmall,
                       ),
+                    ),
                   ),
-                ),
                 )
               ],
             ),
