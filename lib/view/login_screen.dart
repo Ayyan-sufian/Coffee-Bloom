@@ -59,7 +59,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
-              SizedBox(height: 18),
               SizedBox(
                 height: 120,
                 width: 120,

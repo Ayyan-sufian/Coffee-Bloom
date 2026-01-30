@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/service/auth_local_storage.dart';
+import 'package:coffee_bloom/view/home_nav_screen.dart';
 import 'package:coffee_bloom/view/onbording_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -16,10 +18,20 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 3), () {
+    _checkAuth();
+  }
+
+  Future<void> _checkAuth() async {
+    final authStorage = AuthLocalStorage();
+    final isLoggedIn = await authStorage.isLoggedIn();
+
+    Future.delayed(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => OnBoardingScreen()),
+        MaterialPageRoute(
+          builder: (context) =>
+              isLoggedIn ? HomeNavScreen() : OnBoardingScreen(),
+        ),
       );
     });
   }

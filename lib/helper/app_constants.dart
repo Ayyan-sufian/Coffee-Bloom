@@ -3,6 +3,7 @@ class AppConstants {
   static const String baseUrl = "https://coffeebloom-api.vercel.app";
   static const String signUpEnd = "/auth/signup";
   static const String loginEnd = "/auth/login";
+  static const String refreshEnd = "/auth/refresh";
 
 
   /// Splash screen Text
@@ -90,6 +91,11 @@ class AppConstants {
   static const String fvFavoriteTxt = "Favorites";
   static const String fvAddToCartTxt = "Add to cart";
   static const String fvRemoveTxt = "Remove";
+
+  /// History screen
+  static const String hsHistoryTxt = "Order History";
+  static const String hsReorderTxt = "REORDER";
+
 }
 
 class ImagesPath {

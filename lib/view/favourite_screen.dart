@@ -5,13 +5,16 @@ import 'package:coffee_bloom/view/widgets/custom_fav_card.dart';
 import 'package:flutter/material.dart';
 
 class FavouriteScreen extends StatefulWidget {
-  const FavouriteScreen({super.key});
+  final VoidCallback goBack;
+
+  const FavouriteScreen({super.key, required this.goBack});
 
   @override
   State<FavouriteScreen> createState() => _FavouriteScreenState();
 }
 
 class _FavouriteScreenState extends State<FavouriteScreen> {
+
   final List<FavoriteModel> cardList = [
     FavoriteModel(
       imgPath: ImagesPath.coffee1Img,
@@ -70,7 +73,7 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                 children: [
                   IconButton(
                     onPressed: () {
-                      Navigator.pop(context);
+                      widget.goBack();
                     },
                     icon: Icon(
                       Icons.arrow_back_ios,
@@ -80,9 +83,13 @@ class _FavouriteScreenState extends State<FavouriteScreen> {
                   SizedBox(width: 30),
                   Text(
                     AppConstants.fvFavoriteTxt,
-                    style: Theme.of(
+                    style: Theme
+                        .of(
                       context,
-                    ).textTheme.bodyLarge!.copyWith(color: AppTheme.blackColor),
+                    )
+                        .textTheme
+                        .bodyLarge!
+                        .copyWith(color: AppTheme.blackColor),
                   ),
                 ],
               ),

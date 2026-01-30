@@ -1,8 +1,11 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/model_view/auth_view_model.dart';
+import 'package:coffee_bloom/service/auth_local_storage.dart';
 import 'package:coffee_bloom/view/filter_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -80,8 +83,10 @@ class _HomePageScreenState extends State<HomePageScreen> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
+    final authVM = context.read<AuthViewModel>();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppTheme.secColor,
@@ -157,6 +162,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
              ),
               onTap: () {
                 Navigator.pop(context);
+                authVM.logout(context);
               },
             ),
           ],
@@ -357,7 +363,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
-                                  "\$${item['price']}" ?? '',
+                                  "\$${item['price']}",
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -410,7 +416,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
-                                  "\$${item['price']}" ?? '',
+                                  "\$${item['price']}",
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],
@@ -456,7 +462,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
-                                  "\$${item['price']}" ?? '',
+                                  "\$${item['price']}",
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                               ],

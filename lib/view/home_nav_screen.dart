@@ -14,9 +14,9 @@ class HomeNavScreen extends StatefulWidget {
 class _HomeNavScreenState extends State<HomeNavScreen> {
   int _currentIndex = 0;
 
-  final List<Widget> _screen = [
+  List<Widget> get _screen => [
     HomePageScreen(),
-  FavouriteScreen(),
+  FavouriteScreen(goBack: () => setState(() => _currentIndex = 0),),
     ProfileScreen()
   ];
 

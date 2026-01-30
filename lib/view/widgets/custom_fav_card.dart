@@ -28,6 +28,7 @@ class FavCard extends StatelessWidget {
           color: AppTheme.textGreyColor.withAlpha(9),
         ),
         child: Row(
+          crossAxisAlignment: .start,
           children: [
             Column(
               children: [
@@ -44,59 +45,64 @@ class FavCard extends StatelessWidget {
               ],
             ),
             SizedBox(width: 9),
-            Column(
-              children: [
-                Text(
-                  card.name,
-                  style: Theme.of(context).textTheme.bodyLarge!
-                      .copyWith(color: AppTheme.blackColor),
-                ),
-                Text(
-                  card.title,
-                  style: Theme.of(context).textTheme.bodyMedium!
-                      .copyWith(color: AppTheme.textGreyColor),
-                ),
-                Text(
-                  card.description,
-                  style: Theme.of(context).textTheme.bodyMedium!
-                      .copyWith(color: AppTheme.textBlackColor),
-                ),
-                SizedBox(height: 8,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: AppTheme.primaryColor,
-                      ),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        AppConstants.fvAddToCartTxt,
-                        style: TextStyle(
-                          color: AppTheme.secColor,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 9,),
-                    Container(
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(
+            Expanded(
+              child: Column(
+                children: [
+                  Text(
+                    card.name,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.bodyLarge!
+                        .copyWith(color: AppTheme.blackColor),
+                  ),
+                  Text(
+                    card.title,
+                    maxLines: 2,
+                    style: Theme.of(context).textTheme.bodyMedium!
+                        .copyWith(color: AppTheme.textGreyColor),
+                  ),
+                  Text(
+                    card.description,
+                    maxLines: 1,
+                    style: Theme.of(context).textTheme.bodyMedium!
+                        .copyWith(color: AppTheme.textBlackColor),
+                  ),
+                  SizedBox(height: 8,),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
                           color: AppTheme.primaryColor,
                         ),
-                      ),
-                      padding: EdgeInsets.all(10),
-                      child: Text(
-                        AppConstants.fvRemoveTxt,
-                        style: TextStyle(
-                          color: AppTheme.primaryColor,
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          AppConstants.fvAddToCartTxt,
+                          style: TextStyle(
+                            color: AppTheme.secColor,
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                      SizedBox(width: 9,),
+                      Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          border: Border.all(
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                        padding: EdgeInsets.all(10),
+                        child: Text(
+                          AppConstants.fvRemoveTxt,
+                          style: TextStyle(
+                            color: AppTheme.primaryColor,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -1,4 +1,5 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/view/home_nav_screen.dart';
 import 'package:coffee_bloom/view/home_page_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -78,7 +79,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(onPressed: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomePageScreen(),));
+                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeNavScreen(),));
                     }, child: Padding(
                       padding: const EdgeInsets.symmetric(vertical: 12),
                       child: Text(AppConstants.msContinueTxt,style: Theme.of(context).textTheme.headlineSmall,),
