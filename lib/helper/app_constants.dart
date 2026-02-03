@@ -4,21 +4,26 @@ class AppConstants {
   static const String signUpEnd = "/auth/signup";
   static const String loginEnd = "/auth/login";
   static const String refreshEnd = "/auth/refresh";
-
+  static const String forgotPassEnd = "/auth/forgotPass";
+  static const String verifyEnd = "/auth/verify";
 
   /// Splash screen Text
   static const String splashTxt = "CoffeeBloom";
 
   /// on boarding screen Text
-  static const String os1TitleTxt = "Start your day with the            best coffee brewed from the best ingredients.";
-  static const String os2TitleTxt = "Order your coffee and get it delivered to you swiftly";
-  static const String os1SubTxt = "The best grain, the finest roast and the most powerful flavor.";
+  static const String os1TitleTxt =
+      "Start your day with the            best coffee brewed from the best ingredients.";
+  static const String os2TitleTxt =
+      "Order your coffee and get it delivered to you swiftly";
+  static const String os1SubTxt =
+      "The best grain, the finest roast and the most powerful flavor.";
   static const String getStartBtnTxt = "Get Started";
   static const String skipBtnTxt = "SKIP";
 
   /// Map Screen
   static const String msTextFieldTxt = "Enter an Address, Zip or City";
-  static const String msLocationTxt = "53rd and Broadway\nCyder ct lane\nNew Jersey, NJ 10189\n50m";
+  static const String msLocationTxt =
+      "53rd and Broadway\nCyder ct lane\nNew Jersey, NJ 10189\n50m";
   static const String msGetDirTxt = "Get Directions";
   static const String msOpenHrsTxt = "Opening hours";
   static const String msMonTxt = "Monday";
@@ -51,11 +56,13 @@ class AppConstants {
   static const String ssLogInTxt = "Log In";
   static const String ssErrorTxt = "Password is not correct!";
   static const String ssAllErrorTxt = "Please enter the given requirement!";
-  static const String ssByClickTxt = "By clicking on ‘Continue”, you are agreeing to our Terms & Conditions.";
+  static const String ssByClickTxt =
+      "By clicking on ‘Continue”, you are agreeing to our Terms & Conditions.";
 
   /// verification code
   static const String vsVerifyNumTxt = "Verify your mobile number";
-  static const String vsEnterCodeTxt = "Enter the verification code sent to you";
+  static const String vsEnterCodeTxt =
+      "Enter the verification code sent to you";
   static const String vsDidntGetTxt = "Didn’t get the code? ";
   static const String vsResendCodeTxt = "Resend Code";
 
@@ -71,7 +78,8 @@ class AppConstants {
   static const String hpHiText = "Hi, Beatrice";
   static const String hpHelloThereText = "Hello There,";
   static const String hpLetsDrinkText = "Let's Drink Coffee";
-  static const String hpHintText = "What are you looking for?Let's Drink Coffee";
+  static const String hpHintText =
+      "What are you looking for?Let's Drink Coffee";
   static const String hpCategoriesTxt = "Categories";
   static const String hpHotCoffeeTxt = "Hot Coffee Drinks";
   static const String hpFreshTxt = "Freshly made hot coffees";
@@ -96,6 +104,22 @@ class AppConstants {
   static const String hsHistoryTxt = "Order History";
   static const String hsReorderTxt = "REORDER";
 
+  /// Send email screen
+  static const String seContentTxt =
+      "Enter your Email to receive password reset link";
+  static const String seSendTxt = "Send email";
+  static const String seRememberTxt = "Remember your password?";
+
+  /// forget pass screen
+  static const String fpCreateTxt = "Create Password";
+  static const String fpTitleTxt = "Create a new Password";
+  static const String fpEnterNewPassTxt = "Enter new Password";
+  static const String fpNewPassTxt = "New Password";
+  static const String fpEnterConfirmPassTxt = "Enter confirm Password";
+  static const String fpConfirmPassTxt = "Confirm Password";
+  static const String fpSaveTxt = "Save";
+  static const String fpContentTxt =
+      "Create a new Password to continue shopping";
 }
 
 class ImagesPath {

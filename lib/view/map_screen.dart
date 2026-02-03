@@ -208,7 +208,7 @@ class _MapScreenState extends State<MapScreen> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              AppConstants.msMonTimeTxt,
+                              AppConstants.msSunTimeTxt,
                               style: GoogleFonts.oldStandardTt(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
@@ -229,7 +229,7 @@ class _MapScreenState extends State<MapScreen> {
                           Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LoginScreen(),
+                              builder: (context) => const LoginScreen(),
                             ),
                           );
                         },

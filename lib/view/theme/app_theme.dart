@@ -17,6 +17,9 @@ class AppTheme {
 
 
   static ThemeData lightTheme = ThemeData(
+    appBarTheme: AppBarTheme(
+      backgroundColor: AppTheme.secColor,
+    ),
     scaffoldBackgroundColor: AppTheme.secColor,
     textTheme: TextTheme(
       headlineMedium: GoogleFonts.nunito(
@@ -58,8 +61,13 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: AppTheme.greyColor.withAlpha(60),
+      hintStyle: TextStyle(color: AppTheme.primaryColor),
       errorStyle: TextStyle(
         color: AppTheme.errorColor
+      ),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+        borderSide: BorderSide.none,
       ),
       errorBorder: OutlineInputBorder(
         borderSide: BorderSide(color: AppTheme.errorColor),

@@ -1,4 +1,5 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/view/forget_pass_screen.dart';
 import 'package:coffee_bloom/view/home_nav_screen.dart';
 import 'package:coffee_bloom/view/home_page_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
@@ -36,15 +37,21 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ),
                       Text(
                         AppConstants.vsVerifyNumTxt,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.bodyLarge!.copyWith(color: AppTheme.blackColor),
+                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                          color: AppTheme.blackColor,
+                        ),
                       ),
                       SizedBox(width: 30),
                     ],
                   ),
                   SizedBox(height: 35),
-                  Image.asset(ImagesPath.verifyCodeImg, height: 110, width: 110),
+                  Image.asset(
+                    ImagesPath.verifyCodeImg,
+                    height: 110,
+                    width: 110,
+                    cacheHeight: 220,
+                    cacheWidth: 220,
+                  ),
                   SizedBox(height: 16),
                   Text(
                     AppConstants.vsEnterCodeTxt,
@@ -52,7 +59,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       context,
                     ).textTheme.bodyLarge!.copyWith(color: AppTheme.greyColor),
                   ),
-                  SizedBox(height: 22,),
+                  SizedBox(height: 22),
                   OtpTextField(
                     fieldHeight: 50,
                     fieldWidth: 50,
@@ -60,31 +67,54 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     cursorColor: AppTheme.primaryColor,
                     showFieldAsBox: true,
                     focusedBorderColor: AppTheme.primaryColor,
-                    textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(color: AppTheme.primaryColor),
+                    textStyle: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                      color: AppTheme.primaryColor,
+                    ),
                     filled: true,
                     fillColor: AppTheme.greyColor.withAlpha(60),
                     onSubmit: (String verificationCode) {
                       print("OTP Entered: $verificationCode");
                     },
                   ),
-                  SizedBox(height: 12,),
+                  SizedBox(height: 12),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(AppConstants.vsDidntGetTxt,style: Theme.of(context).textTheme.bodySmall,),
-                      TextButton(onPressed: () {},child: Text(AppConstants.vsResendCodeTxt,style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppTheme.primaryColor),))
+                      Text(
+                        AppConstants.vsDidntGetTxt,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                      TextButton(
+                        onPressed: () {},
+                        child: Text(
+                          AppConstants.vsResendCodeTxt,
+                          style: Theme.of(context).textTheme.bodySmall!
+                              .copyWith(color: AppTheme.primaryColor),
+                        ),
+                      ),
                     ],
                   ),
                   Spacer(),
                   SizedBox(
                     width: double.infinity,
-                    child: ElevatedButton(onPressed: (){
-                      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => HomeNavScreen(),));
-                    }, child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      child: Text(AppConstants.msContinueTxt,style: Theme.of(context).textTheme.headlineSmall,),
-                    )),
-                  )
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ForgetPassScreen(),
+                          ),
+                        );
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: Text(
+                          AppConstants.msContinueTxt,
+                          style: Theme.of(context).textTheme.headlineSmall,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

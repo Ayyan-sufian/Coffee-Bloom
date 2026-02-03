@@ -31,7 +31,6 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   }
   @override
   void dispose() {
-    // TODO: implement dispose
     _pageController.dispose();
     super.dispose();
   }
@@ -74,9 +73,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                           });
                         },
                         itemBuilder: (context, index) {
-                          return Image.asset(
-                            sliderList[index],
-                            fit: _currentIndex < 1 ? BoxFit.cover : null,
+                          return RepaintBoundary(
+                            child: Image.asset(
+                              sliderList[index],
+                              fit: _currentIndex < 1 ? BoxFit.cover : null,
+                              cacheHeight: 600,
+                              cacheWidth: 600,
+                            ),
                           );
                         },
                       ),
@@ -147,7 +150,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       height: 66,
                       child: ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => MapScreen(),));
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const MapScreen(),));
                         },
                         child: Text(
                           AppConstants.getStartBtnTxt,

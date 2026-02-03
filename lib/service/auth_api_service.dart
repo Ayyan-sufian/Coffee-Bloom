@@ -10,8 +10,15 @@ class AuthApiService {
     try {
       final response = await Global().dio.post(data: data, endPoint);
       return response;
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        type: e.type,
+        error: e.error,
+      );
     } catch (e) {
-      throw Exception("This is  result : $e");
+      throw Exception("Sign up failed: $e");
     }
   }
 
@@ -22,8 +29,15 @@ class AuthApiService {
     try {
       final response = await Global().dio.post(data: data, endpoint);
       return response;
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        type: e.type,
+        error: e.error,
+      );
     } catch (e) {
-      throw Exception("This is  result : $e");
+      throw Exception("Login failed: $e");
     }
   }
 
@@ -32,5 +46,22 @@ class AuthApiService {
       AppConstants.refreshEnd,
       data: {"refresh_Token": refreshToken},
     );
+  }
+
+  Future<Response> callSendEmailApi({required String email}) async {
+    try {
+      final response = Global().dio.post(
+        AppConstants.forgotPassEnd,
+        data: {"email": email},
+      );
+      return response;
+    } on DioException catch (e) {
+      throw DioException(
+        requestOptions: e.requestOptions,
+        response: e.response,
+        type: e.type,
+        error: e.error,
+      );
+    }
   }
 }

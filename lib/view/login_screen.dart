@@ -1,4 +1,5 @@
 import 'package:coffee_bloom/model_view/auth_view_model.dart';
+import 'package:coffee_bloom/view/send_email_screen.dart';
 import 'package:coffee_bloom/view/sign_up_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     lEmailController.dispose();
     lPassController.dispose();
     super.dispose();
@@ -47,7 +47,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => HomeNavScreen(),
+                          builder: (context) => const HomeNavScreen(),
                         ),
                       );
                     },
@@ -64,8 +64,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: 120,
                 child: Image.asset(
                   ImagesPath.loginImg,
-                  cacheWidth: 800,
-                  cacheHeight: 800,
+                  cacheWidth: 240,
+                  cacheHeight: 240,
                 ),
               ),
               SizedBox(height: 24),
@@ -123,7 +123,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         TextButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const SendEmailScreen(),
+                              ),
+                            );
+                          },
                           child: Text(
                             AppConstants.lsForgetTxt,
                             style: Theme.of(context).textTheme.bodyMedium,
@@ -184,7 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SignUpScreen(),
+                                builder: (context) => const SignUpScreen(),
                               ),
                             );
                           },
@@ -203,8 +210,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: authVM.isLoading
                             ? null
                             : () async {
-                                print("Calling api");
-
                                 if (_formKey.currentState!.validate()) {
                                   final data = {
                                     "email": lEmailController.text.trim(),
@@ -214,16 +219,18 @@ class _LoginScreenState extends State<LoginScreen> {
 
                                   if (!mounted) return;
 
-                                  print("Called api");
-
-                                  print('SIGNUP RESPONSE IS NULL? ${authVM
-                                      .loginResponse == null}');
-                                  print('ERROR: ${authVM.error}');
                                   if (authVM.loginResponse != null) {
                                     Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => HomeNavScreen(),
+                                        builder: (context) => const HomeNavScreen(),
+                                      ),
+                                    );
+                                  } else if (authVM.error != null) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(authVM.error!),
+                                        backgroundColor: Colors.red,
                                       ),
                                     );
                                   }

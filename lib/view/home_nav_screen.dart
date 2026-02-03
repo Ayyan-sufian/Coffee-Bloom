@@ -13,17 +13,25 @@ class HomeNavScreen extends StatefulWidget {
 
 class _HomeNavScreenState extends State<HomeNavScreen> {
   int _currentIndex = 0;
+  
+  late final List<Widget> _screens;
 
-  List<Widget> get _screen => [
-    HomePageScreen(),
-  FavouriteScreen(goBack: () => setState(() => _currentIndex = 0),),
-    ProfileScreen()
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _screens = [
+      const HomePageScreen(),
+      FavouriteScreen(goBack: () => setState(() => _currentIndex = 0)),
+      const ProfileScreen(),
+    ];
+  }
+
+  List<Widget> get _screen => _screens;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screen[_currentIndex],
+      body: _screens[_currentIndex],
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
         child: Container(

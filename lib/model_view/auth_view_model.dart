@@ -89,7 +89,7 @@ class AuthViewModel extends ChangeNotifier {
   }
 
   /// Refresh Token
-  Future<RefreshResponse?> refreshTokenApi(String refreshToken) async {
+  Future<RefreshResponse?> refreshTokenApi() async {
     try {
       final refreshToken = await _authLocalStorage.getRefreshToken();
       if (refreshToken == null || refreshToken.isEmpty) return null;
@@ -117,7 +117,7 @@ class AuthViewModel extends ChangeNotifier {
     await _authLocalStorage.clearTokens();
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
       (_) => false,
     );
   }

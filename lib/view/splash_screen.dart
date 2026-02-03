@@ -15,22 +15,33 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Timer? _timer;
+
   @override
   void initState() {
     super.initState();
     _checkAuth();
   }
 
+  @override
+  void dispose() {
+    _timer?.cancel();
+    super.dispose();
+  }
+
   Future<void> _checkAuth() async {
     final authStorage = AuthLocalStorage();
     final isLoggedIn = await authStorage.isLoggedIn();
 
-    Future.delayed(const Duration(seconds: 2), () {
+    if (!mounted) return;
+
+    _timer = Timer(const Duration(seconds: 2), () {
+      if (!mounted) return;
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
           builder: (context) =>
-              isLoggedIn ? HomeNavScreen() : OnBoardingScreen(),
+              isLoggedIn ? const HomeNavScreen() : const OnBoardingScreen(),
         ),
       );
     });

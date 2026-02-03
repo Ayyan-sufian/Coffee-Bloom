@@ -2,7 +2,11 @@ import 'package:coffee_bloom/helper/app_constants.dart';
 import 'package:coffee_bloom/model_view/auth_view_model.dart';
 import 'package:coffee_bloom/service/auth_local_storage.dart';
 import 'package:coffee_bloom/view/filter_screen.dart';
+import 'package:coffee_bloom/view/history_screen.dart';
+import 'package:coffee_bloom/view/home_nav_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
+import 'package:coffee_bloom/view/widgets/app_drawer.dart';
+import 'package:coffee_bloom/view/widgets/drawer_menu_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -66,19 +70,8 @@ class _HomePageScreenState extends State<HomePageScreen> {
 
   int _selectedIndex = 0;
 
-  final List<Map<String, dynamic>> _menuItems = [
-    {'icon': Icons.home, 'text': AppConstants.hpHomeText},
-    {'icon': Icons.history, 'text': AppConstants.hpHistoryText},
-    {'icon': Icons.card_giftcard, 'text': AppConstants.hpRewardsText},
-    {'icon': Icons.outgoing_mail, 'text': AppConstants.hpPromoText},
-    {'icon': Icons.support_agent, 'text': AppConstants.hpSupportText},
-    {'icon': Icons.call, 'text': AppConstants.hpContactUsText},
-    {'icon': Icons.settings, 'text': AppConstants.hpSettingsText},
-  ];
-
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
@@ -103,77 +96,44 @@ class _HomePageScreenState extends State<HomePageScreen> {
           ],
         ),
       ),
-      drawer: Drawer(
-        surfaceTintColor: AppTheme.secColor,
-        child:Column(
-          children: [
-            SizedBox(height: 100,),
-            Expanded(
-              child: ListView.builder(
-                itemCount:  _menuItems.length,
-                itemBuilder: (context, index) {
-                  final item = _menuItems[index];
-                  final isSelected = _selectedIndex == index;
+      drawer: AppDrawer(
+      selectedIndex: _selectedIndex,
+      menuItems: DrawerMenuData.items,
+      onItemTap: (index) {
+        final item = DrawerMenuData.items[index];
+        if (_selectedIndex == index) return;
 
-                  return Container(
-                    color: isSelected
-                        ? AppTheme.primaryColor // selected color
-                        : Colors.transparent,
-                    child: ListTile(
-                      leading: Icon(
-                        item['icon'],
-                        color: isSelected ?
-                            AppTheme.secColor :
-                        AppTheme.primaryColor,
-                      ),
-                      title: Text(
-                        item['text'],
-                        style: TextStyle(
-                          color: isSelected ?
-                          AppTheme.secColor :
-                          AppTheme.primaryColor,
-                          fontWeight:
-                          isSelected ? FontWeight.bold : FontWeight.normal,
-                        ),
-                      ),
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = index;
-                        });
-                        Navigator.pop(context);
-                      },
-                    ),
-                  );
-                },
-              ),
+        setState(() {
+          _selectedIndex = index;
+        });
+
+        if (item.screen == null) return;
+
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (!mounted) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => item.screen!,
             ),
-            ListTile(
-              leading: Icon(
-                Icons.logout,
-                color:
-                AppTheme.primaryColor,
-              ),
-              title: Text(
-                AppConstants.hpLogoutText,
-                style: TextStyle(
-                  color: AppTheme.primaryColor,
-                  fontWeight: FontWeight.normal,
-                ),
-             ),
-              onTap: () {
-                Navigator.pop(context);
-                authVM.logout(context);
-              },
-            ),
-          ],
-        ),
-      ),
+          );
+        });
+
+      },
+      onLogout: () {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          authVM.logout(context);
+        });
+      },
+    ),
 
 
-      body: SafeArea(
+
+    body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -252,37 +212,42 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     physics: BouncingScrollPhysics(),
                     onPageChanged: (index) {},
                     itemBuilder: (context, index) {
-                      return AnimatedBuilder(
-                        animation: controller,
-                        builder: (context, child) {
-                          double value = 1.0;
-                          if (controller.position.haveDimensions) {
-                            value = controller.page! - index;
-                            value = (1 - (value.abs() * 0.3)).clamp(0.1, 1.0);
-                          }
-                          return Center(
-                            child: Transform.scale(
-                              scale: value,
-                              child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 8),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 4,
-                                      offset: Offset(2, 2),
-                                    ),
-                                  ],
-                                ),
-                                child: Image.asset(
-                                  images[index],cacheHeight: 800, cacheWidth: 800,
-                                  fit: BoxFit.cover,
-                                ),
+                      return RepaintBoundary(
+                        child: AnimatedBuilder(
+                          animation: controller,
+                          builder: (context, child) {
+                            double value = 1.0;
+                            if (controller.position.haveDimensions) {
+                              value = controller.page! - index;
+                              value = (1 - (value.abs() * 0.3)).clamp(0.1, 1.0);
+                            }
+                            return Center(
+                              child: Transform.scale(
+                                scale: value,
+                                child: child,
                               ),
+                            );
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.symmetric(horizontal: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: const Offset(2, 2),
+                                ),
+                              ],
                             ),
-                          );
-                        },
+                            child: Image.asset(
+                              images[index],
+                              cacheHeight: 300,
+                              cacheWidth: 300,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
                       );
                     },
                   ),
@@ -297,32 +262,41 @@ class _HomePageScreenState extends State<HomePageScreen> {
                 SizedBox(
                   height: 350,
                   child: ListView.builder(
+                    cacheExtent: 200,
                     itemCount: coffeeList.length,
                     itemBuilder: (context, index) {
                       final item = coffeeList[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: AssetImage(item['img']),
-                            ),
-                            SizedBox(width: 16),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['title'] ?? '',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                      return RepaintBoundary(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            children: [
+                              ClipOval(
+                                child: Image.asset(
+                                  item['img'],
+                                  width: 100,
+                                  height: 100,
+                                  cacheHeight: 100,
+                                  cacheWidth: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                                Text(
-                                  item['subtitle'] ?? '',
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              const SizedBox(width: 16),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['title'] ?? '',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item['subtitle'] ?? '',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -339,36 +313,45 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   height: 200,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
+                    cacheExtent: 200,
                     itemCount: coffeeList2.length,
                     itemBuilder: (context, index) {
                       final item = coffeeList2[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: AssetImage(item['img']),
-                            ),
-                            SizedBox(height: 6),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['title'] ?? '',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                      return RepaintBoundary(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ClipOval(
+                                child: Image.asset(
+                                  item['img'],
+                                  width: 100,
+                                  height: 100,
+                                  cacheHeight: 100,
+                                  cacheWidth: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                                Text(
-                                  item['title'] ?? '',
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                                Text(
-                                  "\$${item['price']}",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              const SizedBox(height: 6),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['title'] ?? '',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item['subtitle'] ?? '',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "\$${item['price']}",
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
@@ -412,7 +395,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                   style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                                 Text(
-                                  item['title'] ?? '',
+                                  item['subtitle'] ?? '',
                                   style: Theme.of(context).textTheme.bodySmall,
                                 ),
                                 Text(
@@ -438,36 +421,45 @@ class _HomePageScreenState extends State<HomePageScreen> {
                   height: 200,
                   child: ListView.builder(
                     scrollDirection: Axis.horizontal,
+                    cacheExtent: 200,
                     itemCount: coffeeList2.length,
                     itemBuilder: (context, index) {
                       final item = coffeeList2[index];
-                      return Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundImage: AssetImage(item['img']),
-                            ),
-                            SizedBox(height: 6),
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  item['title'] ?? '',
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                      return RepaintBoundary(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            children: [
+                              ClipOval(
+                                child: Image.asset(
+                                  item['img'],
+                                  width: 100,
+                                  height: 100,
+                                  cacheHeight: 100,
+                                  cacheWidth: 100,
+                                  fit: BoxFit.cover,
                                 ),
-                                Text(
-                                  item['title'] ?? '',
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                                Text(
-                                  "\$${item['price']}",
-                                  style: Theme.of(context).textTheme.bodySmall,
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              const SizedBox(height: 6),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    item['title'] ?? '',
+                                    style: Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                  Text(
+                                    item['subtitle'] ?? '',
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                  Text(
+                                    "\$${item['price']}",
+                                    style: Theme.of(context).textTheme.bodySmall,
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
