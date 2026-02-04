@@ -234,7 +234,7 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.black12,
+                                  color: AppTheme.greyColor.withAlpha(20),
                                   blurRadius: 4,
                                   offset: const Offset(2, 2),
                                 ),

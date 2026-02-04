@@ -15,8 +15,11 @@ class Global {
             receiveTimeout: Duration(seconds: 30),
             headers: {
               'Content-Type' : 'application/json'
-            }
-        )
+            },
+          validateStatus: (status) {
+            return status != null && status < 500;
+          },
+        ),
     );
   }
 }

@@ -32,33 +32,12 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final authVM = context.read<AuthViewModel>();
     return Scaffold(
       body: SafeArea(
         child: SizedBox(
           child: ListView(
             padding: EdgeInsets.all(24),
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeNavScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.secColor,
-                      foregroundColor: AppTheme.primaryColor,
-                    ),
-                    child: Text(AppConstants.skipBtnTxt),
-                  ),
-                ],
-              ),
               SizedBox(
                 height: 120,
                 width: 120,
@@ -204,52 +183,71 @@ class _LoginScreenState extends State<LoginScreen> {
                       ],
                     ),
                     SizedBox(height: size.height * 0.1),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        onPressed: authVM.isLoading
-                            ? null
-                            : () async {
-                                if (_formKey.currentState!.validate()) {
-                                  final data = {
-                                    "email": lEmailController.text.trim(),
-                                    "password": lPassController.text.trim(),
-                                  };
-                                  await authVM.login(data: data);
+                    Consumer<AuthViewModel>(
+                      builder: (context, authVM, _) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            onPressed: authVM.isLoading
+                                ? null
+                                : () async {
+                                    if (_formKey.currentState!.validate()) {
+                                      final data = {
+                                        "email": lEmailController.text.trim(),
+                                        "password": lPassController.text.trim(),
+                                      };
+                                      await authVM.login(data: data);
 
-                                  if (!mounted) return;
+                                      if (!mounted) return;
 
-                                  if (authVM.loginResponse != null) {
-                                    Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const HomeNavScreen(),
+                                      if (authVM.loginResponse != null) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          const SnackBar(
+                                            content: Text('Login successful'),
+                                            backgroundColor: AppTheme.successColor,
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: Duration(seconds: 2),
+                                          ),
+                                        );
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) => const HomeNavScreen(),
+                                          ),
+                                        );
+                                      } else if (authVM.error != null) {
+                                        ScaffoldMessenger.of(context).showSnackBar(
+                                          SnackBar(
+                                            content: Text(authVM.error!),
+                                            backgroundColor: AppTheme.errorColor,
+                                            behavior: SnackBarBehavior.floating,
+                                            duration: const Duration(seconds: 3),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  },
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 12),
+                              child: authVM.isLoading
+                                  ? const SizedBox(
+                                      height: 20,
+                                      width: 20,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secColor),
                                       ),
-                                    );
-                                  } else if (authVM.error != null) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                        content: Text(authVM.error!),
-                                        backgroundColor: Colors.red,
-                                      ),
-                                    );
-                                  }
-                                }
-                              },
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 12),
-                          child: authVM.isLoading
-                              ? const CircularProgressIndicator(
-                                  color: Colors.white,
-                                )
-                              : Text(
-                                  AppConstants.msContinueTxt,
-                                  style: Theme.of(
-                                    context,
-                                  ).textTheme.headlineSmall,
-                                ),
-                        ),
-                      ),
+                                    )
+                                  : Text(
+                                      AppConstants.msContinueTxt,
+                                      style: Theme.of(
+                                        context,
+                                      ).textTheme.headlineSmall,
+                                    ),
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),

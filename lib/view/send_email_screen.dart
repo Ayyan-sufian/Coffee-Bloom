@@ -1,8 +1,11 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/model_view/forgot_view_model.dart';
 import 'package:coffee_bloom/view/login_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:coffee_bloom/view/verification_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class SendEmailScreen extends StatefulWidget {
   const SendEmailScreen({super.key});
@@ -12,15 +15,14 @@ class SendEmailScreen extends StatefulWidget {
 }
 
 class _SendEmailScreenState extends State<SendEmailScreen> {
-  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool error = false;
   bool isLoading = false;
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    _emailController.dispose();
+    emailController.dispose();
     super.dispose();
   }
 
@@ -48,10 +50,10 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                 style: Theme.of(
                   context,
                 ).textTheme.bodyLarge!.copyWith(color: AppTheme.greyColor),
-                textAlign: .center,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 40),
-          
+
               CircleAvatar(
                 radius: 50,
                 backgroundColor: AppTheme.primaryColor.withAlpha(40),
@@ -65,7 +67,7 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
               Form(
                 key: _formKey,
                 child: TextFormField(
-                  controller: _emailController,
+                  controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value!.isEmpty) {
@@ -85,42 +87,88 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                 ),
               ),
               SizedBox(height: 40),
-              SizedBox(
-                height: 60,
-                child: ElevatedButton(
-                  onPressed: () {
-                   if(_formKey.currentState!.validate()){
-                     Navigator.push(
-                       context,
-                       MaterialPageRoute(
-                         builder: (context) => VerificationScreen(),
-                       ),
-                     );
-                   }
-                   else{
-                    setState(() {
-                      error == true;
-                    });
-                   }
-                  },
-                  child: isLoading ?
-                  null: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: .center,
-                      children: [
-                        Icon(Icons.send, color: AppTheme.secColor, size: 20),
-                        SizedBox(width: 8),
-                        Text(
-                          AppConstants.seSendTxt,
-                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                            color: AppTheme.secColor,
-                          ),
-                        ),
-                      ],
+              Consumer<ForgotViewModel>(
+                builder: (context, forgotVM, _) {
+                  return SizedBox(
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: forgotVM.isLoading
+                          ? null
+                          : () async {
+                              if (!_formKey.currentState!.validate()) {
+                                return;
+                              }
+                              
+                              final email = emailController.text.trim();
+                              if (!email.contains('@')) {
+                                _showToast(context, 'Please enter a valid email');
+                                return;
+                              }
+                              
+                              final success = await forgotVM.sendEmail(email);
+
+                              if (!mounted) return;
+
+                              if (success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: const Text('Verification code sent successfully'),
+                                    backgroundColor: AppTheme.successColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 2),
+                                  ),
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => VerificationScreen(email: email),
+                                  ),
+                                );
+                              } else {
+                                final errorMessage =
+                                    forgotVM.Error ?? 'Failed to send email';
+
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(errorMessage),
+                                    backgroundColor: AppTheme.errorColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                            },
+                      child: forgotVM.isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secColor),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.send,
+                                    color: AppTheme.secColor,
+                                    size: 20,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    AppConstants.seSendTxt,
+                                    style: Theme.of(context).textTheme.bodyLarge!
+                                        .copyWith(color: AppTheme.secColor),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
               SizedBox(height: 30),
               Row(
@@ -135,7 +183,9 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => LoginScreen()),
+                        MaterialPageRoute(
+                          builder: (context) => const LoginScreen(),
+                        ),
                       );
                     },
                     child: Text(
@@ -150,6 +200,22 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  void _showToast(BuildContext context, String message) {
+    showCupertinoDialog(
+      context: context,
+      builder: (_) => CupertinoAlertDialog(
+        title: const Text('Alert'),
+        content: Text(message),
+        actions: [
+          CupertinoDialogAction(
+            child: const Text('OK'),
+            onPressed: () => Navigator.pop(context),
+          ),
+        ],
       ),
     );
   }

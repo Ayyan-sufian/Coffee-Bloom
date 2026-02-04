@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class ForgetPassScreen extends StatefulWidget {
-  const ForgetPassScreen({super.key});
+  final String email;
+  const ForgetPassScreen({super.key, required this.email});
 
   @override
   State<ForgetPassScreen> createState() => _ForgetPassScreenState();
@@ -20,11 +21,8 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
   bool isVisible1 = true;
   bool isVisible2 = true;
 
-  bool isError = false;
-
   @override
   void dispose() {
-    // TODO: implement dispose
     passController.dispose();
     confirmPassController.dispose();
     super.dispose();
@@ -32,7 +30,6 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final forgetVM = context.read<ForgotViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -48,7 +45,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
         padding: const EdgeInsets.all(24),
         child: SingleChildScrollView(
           child: Column(
-            crossAxisAlignment: .center,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: 30),
               CircleAvatar(
@@ -66,7 +63,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                 style: Theme.of(
                   context,
                 ).textTheme.headlineSmall!.copyWith(color: AppTheme.blackColor),
-                textAlign: .center,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Text(
@@ -74,13 +71,13 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                 style: Theme.of(
                   context,
                 ).textTheme.bodyLarge!.copyWith(color: AppTheme.greyColor),
-                textAlign: .center,
+                textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
               Form(
                 key: _formKey,
                 child: Column(
-                  crossAxisAlignment: .start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(AppConstants.fpEnterNewPassTxt),
                     TextFormField(
@@ -141,7 +138,6 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: AppTheme.greyColor.withAlpha(60),
-                        errorText: isError ? AppConstants.ssErrorTxt : null,
                         errorStyle: Theme.of(context).textTheme.bodyMedium!
                             .copyWith(color: AppTheme.errorColor),
                         hintText: AppConstants.fpConfirmPassTxt,
@@ -175,57 +171,97 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                 ),
               ),
               SizedBox(height: 50),
-              SizedBox(
-                height: 60,
-                child: ElevatedButton(
-                  onPressed: forgetVM.isLoading
-                      ? null
-                      : () async{
-                    final email = passController.text.trim();
-                    if (!email.contains('@')) {
-                      _showToast(
-                        context,
-                        'Please enter a valid email',
-                      );
-                      return;
-                    }
-                    await forgetVM.sendEmail(email);
+              Consumer<ForgotViewModel>(
+                builder: (context, forgotVM, _) {
+                  return SizedBox(
+                    height: 60,
+                    child: ElevatedButton(
+                      onPressed: forgotVM.isLoading
+                          ? null
+                          : () async {
+                        if (!_formKey.currentState!.validate()) return;
 
-                          if (_formKey.currentState!.validate()) {
-                            Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => LoginScreen(),
+                        final pass = passController.text.trim();
+                        final confirmPass = confirmPassController.text.trim();
+
+                        if (pass != confirmPass) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Passwords do not match'),
+                              backgroundColor: AppTheme.errorColor,
+                              behavior: SnackBarBehavior.floating,
+                              duration: Duration(seconds: 3),
+                            ),
+                          );
+                          return;
+                        }
+
+                        final success =
+                        await forgotVM.resetPass(widget.email, pass, confirmPass);
+
+                        if (!mounted) return;
+
+                        if (success) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Password reset successfully'),
+                              backgroundColor: AppTheme.successColor,
+                              behavior: SnackBarBehavior.floating,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const LoginScreen(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                forgotVM.Error ?? 'Failed to reset password',
                               ),
-                            );
-                          } else {
-                            setState(() {
-                              isError == true;
-                            });
-                          }
-                        },
-                  child: forgetVM.isLoading ?
-                      CupertinoActivityIndicator() :
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisAlignment: .center,
-                      children: [
-                        Icon(
-                          Icons.password,
-                          color: AppTheme.secColor,
-                          size: 25,
-                        ),
-                        SizedBox(width: 8),
-                        Text(
-                          AppConstants.fpSaveTxt,
-                          style: Theme.of(context).textTheme.bodyLarge!
-                              .copyWith(color: AppTheme.secColor),
-                        ),
-                      ],
+                              backgroundColor: AppTheme.errorColor,
+                              behavior: SnackBarBehavior.floating,
+                              duration: const Duration(seconds: 3),
+                            ),
+                          );
+                        }
+                      },
+
+                      child: forgotVM.isLoading
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secColor),
+                              ),
+                            )
+                          : Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.password,
+                                    color: AppTheme.secColor,
+                                    size: 25,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    AppConstants.fpSaveTxt,
+                                    style: Theme.of(context).textTheme.bodyLarge!
+                                        .copyWith(color: AppTheme.secColor),
+                                  ),
+                                ],
+                              ),
+                            ),
                     ),
-                  ),
-                ),
+                  );
+                },
               ),
             ],
           ),

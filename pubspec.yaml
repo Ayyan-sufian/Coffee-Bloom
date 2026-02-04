@@ -41,6 +41,7 @@ dependencies:
   flutter_otp_text_field: ^1.5.1+1
   dio: ^5.9.0
   shared_preferences: ^2.5.4
+  pinput: ^6.0.1
 
 
 dev_dependencies:

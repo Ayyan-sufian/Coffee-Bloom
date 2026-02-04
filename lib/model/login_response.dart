@@ -23,7 +23,7 @@ class LoginResponse {
     }
 
     return LoginResponse(
-        rescode: int.tryParse(json['rescode']?.toString() ?? '') ?? 1,
+        rescode: int.tryParse(json['rescode']?.toString() ?? '0') ?? 0,
         message: json['message'] ?? '',
         data: parsedUser
     );

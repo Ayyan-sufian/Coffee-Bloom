@@ -75,7 +75,7 @@ class AuthViewModel extends ChangeNotifier {
           loginResponse = null;
         }
       } else {
-        error = 'Signup failed with status ${response.statusCode}';
+        error = 'Login failed with status ${response.statusCode}';
       }
     } on DioException catch (e) {
       error =

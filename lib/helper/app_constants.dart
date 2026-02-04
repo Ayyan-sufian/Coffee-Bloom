@@ -6,6 +6,7 @@ class AppConstants {
   static const String refreshEnd = "/auth/refresh";
   static const String forgotPassEnd = "/auth/forgotPass";
   static const String verifyEnd = "/auth/verify";
+  static const String resetPassEnd = "/auth/resetPass";
 
   /// Splash screen Text
   static const String splashTxt = "CoffeeBloom";
@@ -55,12 +56,15 @@ class AppConstants {
   static const String ssAlreadyAccTxt = "Already have an account?";
   static const String ssLogInTxt = "Log In";
   static const String ssErrorTxt = "Password is not correct!";
+  static const String ssSomeErrorTxt = "Something went wrong!";
   static const String ssAllErrorTxt = "Please enter the given requirement!";
   static const String ssByClickTxt =
       "By clicking on ‘Continue”, you are agreeing to our Terms & Conditions.";
 
   /// verification code
-  static const String vsVerifyNumTxt = "Verify your mobile number";
+  static const String vsVerifyNumTxt = "Verify your OTP by email";
+  static const String vsVerifyOtpTxt = "Verify your OTP";
+  static const String vsEnterOtpTxt = "Enter your OTP";
   static const String vsEnterCodeTxt =
       "Enter the verification code sent to you";
   static const String vsDidntGetTxt = "Didn’t get the code? ";
@@ -117,7 +121,7 @@ class AppConstants {
   static const String fpNewPassTxt = "New Password";
   static const String fpEnterConfirmPassTxt = "Enter confirm Password";
   static const String fpConfirmPassTxt = "Confirm Password";
-  static const String fpSaveTxt = "Save";
+  static const String fpSaveTxt = "Save Password";
   static const String fpContentTxt =
       "Create a new Password to continue shopping";
 }

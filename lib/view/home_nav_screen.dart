@@ -1,8 +1,11 @@
+import 'package:coffee_bloom/model_view/auth_view_model.dart';
 import 'package:coffee_bloom/view/favourite_screen.dart';
 import 'package:coffee_bloom/view/home_page_screen.dart';
+import 'package:coffee_bloom/view/login_screen.dart';
 import 'package:coffee_bloom/view/profile_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class HomeNavScreen extends StatefulWidget {
   const HomeNavScreen({super.key});
@@ -19,11 +22,28 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
   @override
   void initState() {
     super.initState();
+    _checkAuth();
     _screens = [
       const HomePageScreen(),
       FavouriteScreen(goBack: () => setState(() => _currentIndex = 0)),
       const ProfileScreen(),
     ];
+  }
+
+  Future<void> _checkAuth() async {
+    await Future.delayed(const Duration(milliseconds: 100));
+    if (!mounted) return;
+    
+    final authVM = Provider.of<AuthViewModel>(context, listen: false);
+    final isLoggedIn = await authVM.isLoggedIn();
+    
+    if (!isLoggedIn && mounted) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
+        (route) => false,
+      );
+    }
   }
 
   List<Widget> get _screen => _screens;

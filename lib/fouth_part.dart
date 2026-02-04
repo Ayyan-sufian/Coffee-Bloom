@@ -1,3 +1,4 @@
+import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class CollageContainer extends StatelessWidget {
@@ -22,7 +23,7 @@ class CollageContainer extends StatelessWidget {
         width: 300, // Adjust width as needed
         height: 200, // Adjust height as needed
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppTheme.secColor,
           borderRadius: BorderRadius.circular(110),
         ),
         child: Stack(
@@ -36,14 +37,14 @@ class CollageContainer extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
+                    color: AppTheme.greyColor,
                     child: const Icon(Icons.error),
                   );
                 },
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Container(
-                    color: Colors.grey[200],
+                    color: AppTheme.greyColor,
                     child: Center(
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
@@ -64,14 +65,14 @@ class CollageContainer extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
+                    color: AppTheme.greyColor,
                     child: const Icon(Icons.error),
                   );
                 },
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Container(
-                    color: Colors.grey[200],
+                    color: AppTheme.greyColor,
                     child: Center(
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
@@ -92,14 +93,14 @@ class CollageContainer extends StatelessWidget {
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: Colors.grey[300],
+                    color: AppTheme.greyColor,
                     child: const Icon(Icons.error),
                   );
                 },
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
                   return Container(
-                    color: Colors.grey[200],
+                    color: AppTheme.greyColor,
                     child: Center(
                       child: CircularProgressIndicator(
                         value: loadingProgress.expectedTotalBytes != null
@@ -131,7 +132,7 @@ class CollageContainer extends StatelessWidget {
                   child: Text(
                     '16',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: AppTheme.secColor,
                       fontSize: 12,
                     ),
                   ),
