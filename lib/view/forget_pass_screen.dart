@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 
 class ForgetPassScreen extends StatefulWidget {
   final String email;
+
   const ForgetPassScreen({super.key, required this.email});
 
   @override
@@ -179,57 +180,67 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                       onPressed: forgotVM.isLoading
                           ? null
                           : () async {
-                        if (!_formKey.currentState!.validate()) return;
+                              if (!_formKey.currentState!.validate()) return;
 
-                        final pass = passController.text.trim();
-                        final confirmPass = confirmPassController.text.trim();
+                              final pass = passController.text.trim();
+                              final confirmPass = confirmPassController.text
+                                  .trim();
 
-                        if (pass != confirmPass) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Passwords do not match'),
-                              backgroundColor: AppTheme.errorColor,
-                              behavior: SnackBarBehavior.floating,
-                              duration: Duration(seconds: 3),
-                            ),
-                          );
-                          return;
-                        }
+                              if (pass != confirmPass) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('Passwords do not match'),
+                                    backgroundColor: AppTheme.errorColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 3),
+                                  ),
+                                );
+                                return;
+                              }
 
-                        final success =
-                        await forgotVM.resetPass(widget.email, pass, confirmPass);
+                              final success = await forgotVM.resetPass(
+                                widget.email,
+                                pass,
+                                confirmPass,
+                              );
 
-                        if (!mounted) return;
+                              final currentContext = context;
+                              if (!currentContext.mounted) return;
 
-                        if (success) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('Password reset successfully'),
-                              backgroundColor: AppTheme.successColor,
-                              behavior: SnackBarBehavior.floating,
-                              duration: Duration(seconds: 2),
-                            ),
-                          );
+                              if (success) {
+                                ScaffoldMessenger.of(currentContext).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                      'Password reset successfully',
+                                    ),
+                                    backgroundColor: AppTheme.successColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
 
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const LoginScreen(),
-                            ),
-                          );
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                forgotVM.Error ?? 'Failed to reset password',
-                              ),
-                              backgroundColor: AppTheme.errorColor,
-                              behavior: SnackBarBehavior.floating,
-                              duration: const Duration(seconds: 3),
-                            ),
-                          );
-                        }
-                      },
+                                Navigator.pushReplacement(
+                                  currentContext,
+                                  MaterialPageRoute(
+                                    builder: (_) => const LoginScreen(),
+                                  ),
+                                );
+                              } else {
+                                final currentContext = context;
+                                if (!currentContext.mounted) return;
+                                ScaffoldMessenger.of(currentContext).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      forgotVM.error ??
+                                          'Failed to reset password',
+                                    ),
+                                    backgroundColor: AppTheme.errorColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                            },
 
                       child: forgotVM.isLoading
                           ? const SizedBox(
@@ -237,7 +248,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                               width: 20,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secColor),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  AppTheme.secColor,
+                                ),
                               ),
                             )
                           : Padding(
@@ -253,7 +266,9 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                                   const SizedBox(width: 8),
                                   Text(
                                     AppConstants.fpSaveTxt,
-                                    style: Theme.of(context).textTheme.bodyLarge!
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyLarge!
                                         .copyWith(color: AppTheme.secColor),
                                   ),
                                 ],
@@ -266,21 +281,6 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
             ],
           ),
         ),
-      ),
-    );
-  }
-  void _showToast(BuildContext context, String message) {
-    showCupertinoDialog(
-      context: context,
-      builder: (_) => CupertinoAlertDialog(
-        title: const Text('Alert'),
-        content: Text(message),
-        actions: [
-          CupertinoDialogAction(
-            child: const Text('OK'),
-            onPressed: () => Navigator.pop(context),
-          ),
-        ],
       ),
     );
   }

@@ -1,15 +1,17 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
-import 'package:coffee_bloom/model_view/auth_view_model.dart';
-import 'package:coffee_bloom/service/auth_local_storage.dart';
+import 'package:coffee_bloom/model_view/category_view_model.dart';
 import 'package:coffee_bloom/view/filter_screen.dart';
-import 'package:coffee_bloom/view/history_screen.dart';
-import 'package:coffee_bloom/view/home_nav_screen.dart';
+import 'package:coffee_bloom/view/login_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:coffee_bloom/view/widgets/app_drawer.dart';
+import 'package:coffee_bloom/view/widgets/custom_category_card.dart';
 import 'package:coffee_bloom/view/widgets/drawer_menu_data.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../model_view/auth_vm.dart';
+
 
 class HomePageScreen extends StatefulWidget {
   const HomePageScreen({super.key});
@@ -76,7 +78,6 @@ class _HomePageScreenState extends State<HomePageScreen> {
     super.dispose();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final authVM = context.read<AuthViewModel>();
@@ -97,39 +98,34 @@ class _HomePageScreenState extends State<HomePageScreen> {
         ),
       ),
       drawer: AppDrawer(
-      selectedIndex: _selectedIndex,
-      menuItems: DrawerMenuData.items,
-      onItemTap: (index) {
-        final item = DrawerMenuData.items[index];
-        if (_selectedIndex == index) return;
+        selectedIndex: _selectedIndex,
+        menuItems: DrawerMenuData.items,
+        onItemTap: (index) {
+          final item = DrawerMenuData.items[index];
+          if (_selectedIndex == index) return;
 
-        setState(() {
-          _selectedIndex = index;
-        });
+          setState(() {
+            _selectedIndex = index;
+          });
 
-        if (item.screen == null) return;
+          if (item.screen == null) return;
 
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (!mounted) return;
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => item.screen!,
-            ),
-          );
-        });
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (!mounted) return;
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => item.screen!),
+            );
+          });
+        },
+        onLogout: () {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            authVM.logout(context);
+          });
+        },
+      ),
 
-      },
-      onLogout: () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          authVM.logout(context);
-        });
-      },
-    ),
-
-
-
-    body: SafeArea(
+      body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: SingleChildScrollView(
@@ -195,7 +191,12 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     ),
                     IconButton(
                       onPressed: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => FilterScreen(),));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => FilterScreen(),
+                          ),
+                        );
                       },
                       icon: Icon(
                         CupertinoIcons.slider_horizontal_3,
@@ -259,48 +260,75 @@ class _HomePageScreenState extends State<HomePageScreen> {
                     color: AppTheme.textBlackColor,
                   ),
                 ),
-                SizedBox(
-                  height: 350,
-                  child: ListView.builder(
-                    cacheExtent: 200,
-                    itemCount: coffeeList.length,
-                    itemBuilder: (context, index) {
-                      final item = coffeeList[index];
-                      return RepaintBoundary(
+                Consumer<CategoryViewModel>(
+                  builder: (context, vm, _) {
+                    if (vm.isLoading) {
+                      return Center(
                         child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
                             children: [
-                              ClipOval(
-                                child: Image.asset(
-                                  item['img'],
-                                  width: 100,
-                                  height: 100,
-                                  cacheHeight: 100,
-                                  cacheWidth: 100,
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    item['title'] ?? '',
-                                    style: Theme.of(context).textTheme.bodyMedium,
-                                  ),
-                                  Text(
-                                    item['subtitle'] ?? '',
-                                    style: Theme.of(context).textTheme.bodySmall,
-                                  ),
-                                ],
+                              CircularProgressIndicator(),
+                              SizedBox(height: 10),
+                              Text(
+                                'Loading categories...',
+                                style: Theme.of(context).textTheme.bodySmall,
                               ),
                             ],
                           ),
                         ),
                       );
-                    },
-                  ),
+                    }
+
+                    if (vm.error != null) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.error_outline,
+                                color: AppTheme.errorColor,
+                                size: 40,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                vm.error.toString(),
+                                textAlign: TextAlign.center,
+                                style: Theme.of(context).textTheme.bodySmall!
+                                    .copyWith(color: AppTheme.errorColor),
+                              ),
+                              SizedBox(height: 10),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    if (vm.categoryList.isEmpty) {
+                      return Center(
+                        child: Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Column(
+                            children: [
+                              Icon(
+                                Icons.category_outlined,
+                                color: AppTheme.greyColor,
+                                size: 40,
+                              ),
+                              SizedBox(height: 10),
+                              Text(
+                                'No categories found',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }
+
+                    return CustomCategoryCard();
+                  },
                 ),
                 SizedBox(height: 18),
                 Text(
@@ -338,15 +366,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 children: [
                                   Text(
                                     item['title'] ?? '',
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
                                   ),
                                   Text(
                                     item['subtitle'] ?? '',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                   Text(
                                     "\$${item['price']}",
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
@@ -381,7 +415,9 @@ class _HomePageScreenState extends State<HomePageScreen> {
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(12),
                                 child: Image.asset(
-                                  item['img'],cacheHeight: 800, cacheWidth: 800,
+                                  item['img'],
+                                  cacheHeight: 800,
+                                  cacheWidth: 800,
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -446,15 +482,21 @@ class _HomePageScreenState extends State<HomePageScreen> {
                                 children: [
                                   Text(
                                     item['title'] ?? '',
-                                    style: Theme.of(context).textTheme.bodyMedium,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodyMedium,
                                   ),
                                   Text(
                                     item['subtitle'] ?? '',
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                   Text(
                                     "\$${item['price']}",
-                                    style: Theme.of(context).textTheme.bodySmall,
+                                    style: Theme.of(
+                                      context,
+                                    ).textTheme.bodySmall,
                                   ),
                                 ],
                               ),
@@ -472,5 +514,4 @@ class _HomePageScreenState extends State<HomePageScreen> {
       ),
     );
   }
-
 }

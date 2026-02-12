@@ -16,18 +16,22 @@ class AuthLocalStorage {
     required String refreshToken,
   }) async {
     final prefs = await _preferences;
-    await prefs.setString(_accessTokenKey, accessToken);
+   await prefs.setString(_accessTokenKey, accessToken);
     await prefs.setString(_refreshTokenKey, refreshToken);
   }
 
   Future<String?> getAccessToken() async {
     final prefs = await _preferences;
-    return prefs.getString(_accessTokenKey);
+    final accessToken =  prefs.getString(_accessTokenKey);
+    print(accessToken);
+    return accessToken;
   }
 
   Future<String?> getRefreshToken() async {
     final prefs = await _preferences;
-    return prefs.getString(_refreshTokenKey);
+    final refreshToken = prefs.getString(_refreshTokenKey);
+    print(refreshToken);
+    return refreshToken;
   }
 
   Future<void> clearTokens() async {
@@ -36,8 +40,10 @@ class AuthLocalStorage {
     await prefs.remove(_refreshTokenKey);
   }
 
-  Future<bool> isLoggedIn() async {
-    final prefs = await _preferences;
-    return prefs.containsKey(_accessTokenKey);
+  Future<bool> checkToken() async {
+    final pref = await _preferences;
+    final String? token = pref.getString(_accessTokenKey);
+    final bool isLoggedIn = token != null && token.trim().isNotEmpty;
+    return isLoggedIn;
   }
 }

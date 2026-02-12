@@ -1,12 +1,8 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
 import 'package:coffee_bloom/model_view/forgot_view_model.dart';
 import 'package:coffee_bloom/view/forget_pass_screen.dart';
-import 'package:coffee_bloom/view/home_nav_screen.dart';
-import 'package:coffee_bloom/view/home_page_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_otp_text_field/flutter_otp_text_field.dart';
 import 'package:pinput/pinput.dart';
 import 'package:provider/provider.dart';
 
@@ -186,10 +182,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 : () async {
                                     final success = await forgotVM.sendEmail(widget.email);
                                     
-                                    if (!mounted) return;
+                                    final currentContext = context;
+                                    if (!currentContext.mounted) return;
                                     
                                     if (success) {
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(currentContext).showSnackBar(
                                         const SnackBar(
                                           content: Text('Verification code resent successfully'),
                                           backgroundColor: AppTheme.successColor,
@@ -199,9 +196,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       );
                                     } else {
                                       final errorMessage =
-                                          forgotVM.Error ?? 'Failed to resend code';
+                                          forgotVM.error ?? 'Failed to resend code';
                                       
-                                      ScaffoldMessenger.of(context).showSnackBar(
+                                      ScaffoldMessenger.of(currentContext).showSnackBar(
                                         SnackBar(
                                           content: Text(errorMessage),
                                           backgroundColor: AppTheme.errorColor,
@@ -252,8 +249,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
                                   if (!mounted) return;
 
+                                  final currentContext = context;
+                                  if (!currentContext.mounted) return;
+
                                   if (success) {
-                                    ScaffoldMessenger.of(context).showSnackBar(
+                                    ScaffoldMessenger.of(currentContext).showSnackBar(
                                       const SnackBar(
                                         content: Text('OTP verified successfully'),
                                         backgroundColor: AppTheme.successColor,
@@ -262,7 +262,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                       ),
                                     );
                                     Navigator.pushReplacement(
-                                      context,
+                                      currentContext,
                                       MaterialPageRoute(
                                         builder: (context) => ForgetPassScreen(
                                           email: widget.email,
@@ -271,9 +271,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     );
                                   } else {
                                     final errorMessage =
-                                        forgotVM.Error ?? 'Invalid OTP';
+                                        forgotVM.error ?? 'Invalid OTP';
 
-                                    ScaffoldMessenger.of(context).showSnackBar(
+                                    ScaffoldMessenger.of(currentContext).showSnackBar(
                                       SnackBar(
                                         content: Text(errorMessage),
                                         backgroundColor: AppTheme.errorColor,

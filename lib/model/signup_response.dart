@@ -1,34 +1,54 @@
-
-import 'package:coffee_bloom/model/user_data.dart';
-
 class SignupResponse {
-  final int rescode;
-  final String message;
-  final UserData? data;
+  int? rescode;
+  int? status;
+  String? message;
+  SignUpData? data;
 
-  SignupResponse({
-    required this.rescode,
-    required this.message,
-    required this.data,
-  });
+  SignupResponse({this.rescode, this.status, this.message, this.data});
 
-  factory SignupResponse.fromJson(Map<String, dynamic> json) {
-    final rawData = json['data'];
-
-    UserData? parsedUser;
-
-    if (rawData is Map<String, dynamic>) {
-      parsedUser = UserData.fromJson(rawData);
-    } else if (rawData is List && rawData.isNotEmpty) {
-      parsedUser = UserData.fromJson(rawData.first);
-    }
-
-    return SignupResponse(
-      rescode: int.tryParse(json['rescode']?.toString() ?? '') ?? 1,
-      message: json['message'] ?? '',
-      data: parsedUser
-    );
+  SignupResponse.fromJson(Map<String, dynamic> json) {
+    rescode = json['rescode'];
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? new SignUpData.fromJson(json['data']) : null;
   }
 
-  bool get isSuccess => rescode == 1;
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['rescode'] = this.rescode;
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
+    }
+    return data;
+  }
+}
+
+class SignUpData {
+  int? id;
+  String? name;
+  String? email;
+  String? address;
+  String? token;
+
+  SignUpData({this.id, this.name, this.email, this.address, this.token});
+
+  SignUpData.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    email = json['email'];
+    address = json['address'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = this.id;
+    data['name'] = this.name;
+    data['email'] = this.email;
+    data['address'] = this.address;
+    data['token'] = this.token;
+    return data;
+  }
 }

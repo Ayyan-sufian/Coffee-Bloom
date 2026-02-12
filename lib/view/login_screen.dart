@@ -1,4 +1,3 @@
-import 'package:coffee_bloom/model_view/auth_view_model.dart';
 import 'package:coffee_bloom/view/send_email_screen.dart';
 import 'package:coffee_bloom/view/sign_up_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
@@ -6,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../helper/app_constants.dart';
+import '../model_view/auth_vm.dart';
 import 'home_nav_screen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -198,10 +198,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                       };
                                       await authVM.login(data: data);
 
-                                      if (!mounted) return;
+                                      final currentContext = context;
+                                      if (!currentContext.mounted) return;
 
                                       if (authVM.loginResponse != null) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
+                                        ScaffoldMessenger.of(currentContext).showSnackBar(
                                           const SnackBar(
                                             content: Text('Login successful'),
                                             backgroundColor: AppTheme.successColor,
@@ -210,15 +211,15 @@ class _LoginScreenState extends State<LoginScreen> {
                                           ),
                                         );
                                         Navigator.pushReplacement(
-                                          context,
+                                          currentContext,
                                           MaterialPageRoute(
                                             builder: (context) => const HomeNavScreen(),
                                           ),
                                         );
-                                      } else if (authVM.error != null) {
-                                        ScaffoldMessenger.of(context).showSnackBar(
+                                      } else if (authVM.message != null) {
+                                        ScaffoldMessenger.of(currentContext).showSnackBar(
                                           SnackBar(
-                                            content: Text(authVM.error!),
+                                            content: Text(authVM.message!),
                                             backgroundColor: AppTheme.errorColor,
                                             behavior: SnackBarBehavior.floating,
                                             duration: const Duration(seconds: 3),

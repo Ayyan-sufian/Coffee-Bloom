@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class FilterScreen extends StatefulWidget {
-   FilterScreen({super.key});
+  const FilterScreen({super.key});
 
   @override
   State<FilterScreen> createState() => _FilterScreenState();

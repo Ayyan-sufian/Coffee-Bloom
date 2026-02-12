@@ -1,31 +1,45 @@
-import 'package:coffee_bloom/model/user_data.dart';
-
 class LoginResponse {
-  final int rescode;
-  final String message;
-  final UserData? data;
+  int? rescode;
+  int? status;
+  String? message;
+  LoginData? data;
 
-  LoginResponse({
-    required this.rescode,
-    required this.message,
-    required this.data,
-  });
+  LoginResponse({this.rescode, this.status, this.message, this.data});
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json){
-    final rawData = json['data'];
+  LoginResponse.fromJson(Map<String, dynamic> json) {
+    rescode = json['rescode'];
+    status = json['status'];
+    message = json['message'];
+    data = json['data'] != null ? new LoginData.fromJson(json['data']) : null;
+  }
 
-    UserData? parsedUser;
-
-    if (rawData is Map<String, dynamic>) {
-      parsedUser = UserData.fromJson(rawData);
-    } else if (rawData is List && rawData.isNotEmpty) {
-      parsedUser = UserData.fromJson(rawData.first);
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['rescode'] = this.rescode;
+    data['status'] = this.status;
+    data['message'] = this.message;
+    if (this.data != null) {
+      data['data'] = this.data!.toJson();
     }
+    return data;
+  }
+}
 
-    return LoginResponse(
-        rescode: int.tryParse(json['rescode']?.toString() ?? '0') ?? 0,
-        message: json['message'] ?? '',
-        data: parsedUser
-    );
+class LoginData {
+  String? accessToken;
+  String? refreshToken;
+
+  LoginData({this.accessToken, this.refreshToken});
+
+  LoginData.fromJson(Map<String, dynamic> json) {
+    accessToken = json['accessToken'];
+    refreshToken = json['refreshToken'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['accessToken'] = this.accessToken;
+    data['refreshToken'] = this.refreshToken;
+    return data;
   }
 }

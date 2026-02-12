@@ -107,10 +107,11 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                               
                               final success = await forgotVM.sendEmail(email);
 
-                              if (!mounted) return;
+                              final currentContext = context;
+                              if (!currentContext.mounted) return;
 
                               if (success) {
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                ScaffoldMessenger.of(currentContext).showSnackBar(
                                   SnackBar(
                                     content: const Text('Verification code sent successfully'),
                                     backgroundColor: AppTheme.successColor,
@@ -119,16 +120,16 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                                   ),
                                 );
                                 Navigator.push(
-                                  context,
+                                  currentContext,
                                   MaterialPageRoute(
                                     builder: (_) => VerificationScreen(email: email),
                                   ),
                                 );
                               } else {
                                 final errorMessage =
-                                    forgotVM.Error ?? 'Failed to send email';
+                                    forgotVM.error ?? 'Failed to send email';
 
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                ScaffoldMessenger.of(currentContext).showSnackBar(
                                   SnackBar(
                                     content: Text(errorMessage),
                                     backgroundColor: AppTheme.errorColor,

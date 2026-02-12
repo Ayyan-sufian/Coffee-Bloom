@@ -1,11 +1,11 @@
-import 'package:coffee_bloom/model_view/auth_view_model.dart';
+import 'package:coffee_bloom/model_view/category_view_model.dart';
 import 'package:coffee_bloom/model_view/forgot_view_model.dart';
-import 'package:coffee_bloom/view/forget_pass_screen.dart';
 import 'package:coffee_bloom/view/splash_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
-import 'package:coffee_bloom/view/verification_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'model_view/auth_vm.dart';
 
 void main() {
   runApp(
@@ -13,6 +13,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ForgotViewModel()),
+        ChangeNotifierProvider(create: (_) => CategoryViewModel()),
       ],
       child: const MyApp(),
     ),

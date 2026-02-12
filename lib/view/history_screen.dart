@@ -1,5 +1,4 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
-import 'package:coffee_bloom/model_view/auth_view_model.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:coffee_bloom/view/widgets/app_drawer.dart';
 import 'package:coffee_bloom/view/widgets/drawer_menu_data.dart';
@@ -7,9 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../model/favorite_model.dart';
+import '../model_view/auth_vm.dart';
 
 class HistoryScreen extends StatefulWidget {
-  HistoryScreen({super.key});
+  const HistoryScreen({super.key});
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();

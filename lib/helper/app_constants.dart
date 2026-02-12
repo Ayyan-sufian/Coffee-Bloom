@@ -1,12 +1,15 @@
 class AppConstants {
   ///base url
   static const String baseUrl = "https://coffeebloom-api.vercel.app";
+  static const String imgBaseUrl = "https://coffeebloom-api.vercel.app/";
   static const String signUpEnd = "/auth/signup";
   static const String loginEnd = "/auth/login";
   static const String refreshEnd = "/auth/refresh";
   static const String forgotPassEnd = "/auth/forgotPass";
   static const String verifyEnd = "/auth/verify";
   static const String resetPassEnd = "/auth/resetPass";
+  static const String categoryEnd = "/catagory/";
+  static const String categoryIdEnd = "/coffees/catagory/";
 
   /// Splash screen Text
   static const String splashTxt = "CoffeeBloom";

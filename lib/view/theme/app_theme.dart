@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -15,6 +13,7 @@ class AppTheme {
   static const Color textWhiteColor = Color(0xFFF6F6F6);
   static const Color textGreyColor = Color(0xFFCECECE);
   static const Color textBlackColor = Color(0xFF000000);
+  static const Color transparentColor = Colors.transparent;
 
 
   static ThemeData lightTheme = ThemeData(

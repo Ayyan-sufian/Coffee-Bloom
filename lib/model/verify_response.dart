@@ -6,7 +6,7 @@ class VerifyResponse {
 
   factory VerifyResponse.fromJson(Map<String, dynamic> json) {
     return VerifyResponse(
-      rescode: int.tryParse(json['rescode'].toString() ?? '') ?? 1,
+      rescode: int.tryParse(json['rescode'].toString()) ?? 1,
       message: json['message'],
     );
   }

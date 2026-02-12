@@ -1,16 +1,14 @@
-import 'package:coffee_bloom/helper/app_constants.dart';
-import 'package:coffee_bloom/helper/helper.dart';
+
 import 'package:dio/dio.dart';
 
-class AuthApiService {
-  Future<Response> callSignUpApi({
-    required Map<String, dynamic> data,
-    required String endpoint,
-  }) async {
+import '../helper/app_constants.dart';
+import '../helper/helper.dart';
+class ForgotApiService {
+  Future<Response> callSendEmailApi({required String email}) async {
     try {
-      final response = await Global().dio.post(
-        endpoint,
-        data: data,
+      final response = Global().dio.post(
+        AppConstants.forgotPassEnd,
+        data: {"email": email},
       );
       return response;
     } on DioException catch (e) {
@@ -20,19 +18,17 @@ class AuthApiService {
         type: e.type,
         error: e.error,
       );
-    } catch (e) {
-      throw Exception("Sign up failed: $e");
     }
   }
 
-  Future<Response> callLoginApi({
-    required Map<String, dynamic> data,
-    required String endpoint,
+  Future<Response> callVerifyApi({
+    required String email,
+    required String code,
   }) async {
     try {
       final response = await Global().dio.post(
-        endpoint,
-        data: data,
+        AppConstants.verifyEnd,
+        data: {"email": email, "otp": code},
       );
       return response;
     } on DioException catch (e) {
@@ -42,16 +38,19 @@ class AuthApiService {
         type: e.type,
         error: e.error,
       );
-    } catch (e) {
-      throw Exception("Login failed: $e");
     }
   }
 
-  Future<Response> callRefreshTokenApi({required String refreshToken, required String endpoint}) async {
+  Future<Response> callResetPassApi(
+      {required String email, required String pass, required String confirmPass}) async {
     try {
       final response = await Global().dio.post(
-        endpoint,
-        data: {"refresh_Token": refreshToken},
+        AppConstants.resetPassEnd,
+        data: {
+          "email": email,
+          "password": pass,
+          "confirmPassword": confirmPass,
+        },
       );
       return response;
     } on DioException catch (e) {
@@ -61,8 +60,6 @@ class AuthApiService {
         type: e.type,
         error: e.error,
       );
-    } catch (e) {
-      throw Exception("Refresh token failed: $e");
     }
   }
 }

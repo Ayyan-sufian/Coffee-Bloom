@@ -38,7 +38,7 @@ class AppDrawer extends StatelessWidget {
                   return Container(
                     color: isSelected
                         ? AppTheme.primaryColor
-                        : Colors.transparent,
+                        : AppTheme.transparentColor,
                     child: ListTile(
                       leading: Icon(
                         item.icon,

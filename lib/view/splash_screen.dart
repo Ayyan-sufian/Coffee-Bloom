@@ -1,11 +1,12 @@
 import 'dart:async';
 
 import 'package:coffee_bloom/helper/app_constants.dart';
-import 'package:coffee_bloom/service/auth_local_storage.dart';
 import 'package:coffee_bloom/view/home_nav_screen.dart';
 import 'package:coffee_bloom/view/onbording_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../model_view/auth_vm.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -30,21 +31,16 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _checkAuth() async {
-    final authStorage = AuthLocalStorage();
-    final isLoggedIn = await authStorage.isLoggedIn();
+    final authVM = AuthViewModel();
+    final isLoggedIn = await authVM.isLoggedIn();
 
-    if (!mounted) return;
-
-    _timer = Timer(const Duration(seconds: 2), () {
-      if (!mounted) return;
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              isLoggedIn ? const HomeNavScreen() : const OnBoardingScreen(),
-        ),
-      );
-    });
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (context) =>
+            isLoggedIn ? const HomeNavScreen() : const OnBoardingScreen(),
+      ),
+    );
   }
 
   @override

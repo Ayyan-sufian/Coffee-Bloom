@@ -1,4 +1,4 @@
-import 'package:coffee_bloom/model_view/auth_view_model.dart';
+import 'package:coffee_bloom/view/category_id_screen.dart';
 import 'package:coffee_bloom/view/favourite_screen.dart';
 import 'package:coffee_bloom/view/home_page_screen.dart';
 import 'package:coffee_bloom/view/login_screen.dart';
@@ -6,6 +6,10 @@ import 'package:coffee_bloom/view/profile_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../model_view/auth_vm.dart';
+import '../model_view/category_view_model.dart';
+
 
 class HomeNavScreen extends StatefulWidget {
   const HomeNavScreen({super.key});
@@ -26,8 +30,15 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
     _screens = [
       const HomePageScreen(),
       FavouriteScreen(goBack: () => setState(() => _currentIndex = 0)),
+      const CategoryIdScreen(CateName: 'Cold coffee',),
       const ProfileScreen(),
     ];
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      final authVM = context.read<AuthViewModel>();
+      final token = await authVM.getAccessToken();
+      await context.read<CategoryViewModel>().fetchCategories(token!);
+      await context.read<CategoryViewModel>().fetchCategoryId(token, '2');
+    });
   }
 
   Future<void> _checkAuth() async {
@@ -45,8 +56,6 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
       );
     }
   }
-
-  List<Widget> get _screen => _screens;
 
   @override
   Widget build(BuildContext context) {
