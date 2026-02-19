@@ -13,7 +13,7 @@ class CategoryModel {
     if (json['data'] != null) {
       data = <CategoryData>[];
       json['data'].forEach((v) {
-        data!.add(new CategoryData.fromJson(v));
+        data!.add(CategoryData.fromJson(v));
       });
     }
   }

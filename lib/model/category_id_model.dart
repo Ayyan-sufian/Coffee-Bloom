@@ -13,13 +13,13 @@ class CategoryIdModel {
     if (json['data'] != null) {
       data = <CategoryIdData>[];
       json['data'].forEach((v) {
-        data!.add(new CategoryIdData.fromJson(v));
+        data!.add( CategoryIdData.fromJson(v));
       });
     }
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['rescode'] = this.rescode;
     data['status'] = this.status;
     data['message'] = this.message;

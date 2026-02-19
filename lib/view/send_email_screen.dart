@@ -104,16 +104,20 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                                 _showToast(context, 'Please enter a valid email');
                                 return;
                               }
-                              
-                              final success = await forgotVM.sendEmail(email);
+
+                              final data = {
+                                'email': email
+                              };
+
+                              await forgotVM.sendEmail(data: data);
 
                               final currentContext = context;
                               if (!currentContext.mounted) return;
 
-                              if (success) {
+                              if (forgotVM.forgetResponse != null) {
                                 ScaffoldMessenger.of(currentContext).showSnackBar(
                                   SnackBar(
-                                    content: const Text('Verification code sent successfully'),
+                                    content: const Text(AppConstants.seVerCodeSentTxt),
                                     backgroundColor: AppTheme.successColor,
                                     behavior: SnackBarBehavior.floating,
                                     duration: const Duration(seconds: 2),
@@ -127,7 +131,7 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                                 );
                               } else {
                                 final errorMessage =
-                                    forgotVM.error ?? 'Failed to send email';
+                                    forgotVM.error ?? AppConstants.failedSendEmailTxt;
 
                                 ScaffoldMessenger.of(currentContext).showSnackBar(
                                   SnackBar(

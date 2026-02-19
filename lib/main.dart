@@ -1,4 +1,5 @@
 import 'package:coffee_bloom/model_view/category_view_model.dart';
+import 'package:coffee_bloom/model_view/coffee_view_model.dart';
 import 'package:coffee_bloom/model_view/forgot_view_model.dart';
 import 'package:coffee_bloom/view/splash_screen.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
@@ -14,6 +15,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => AuthViewModel()),
         ChangeNotifierProvider(create: (_) => ForgotViewModel()),
         ChangeNotifierProvider(create: (_) => CategoryViewModel()),
+        ChangeNotifierProvider(create: (_) => CoffeeViewModel()),
       ],
       child: const MyApp(),
     ),

@@ -23,14 +23,12 @@ class AuthLocalStorage {
   Future<String?> getAccessToken() async {
     final prefs = await _preferences;
     final accessToken =  prefs.getString(_accessTokenKey);
-    print(accessToken);
     return accessToken;
   }
 
   Future<String?> getRefreshToken() async {
     final prefs = await _preferences;
     final refreshToken = prefs.getString(_refreshTokenKey);
-    print(refreshToken);
     return refreshToken;
   }
 

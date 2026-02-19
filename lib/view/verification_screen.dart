@@ -180,15 +180,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             onPressed: forgotVM.isLoading
                                 ? null
                                 : () async {
-                                    final success = await forgotVM.sendEmail(widget.email);
+                              final data = {
+                                'email': widget.email,
+                              };
+                                    await forgotVM.sendEmail(data: data);
                                     
                                     final currentContext = context;
                                     if (!currentContext.mounted) return;
                                     
-                                    if (success) {
+                                    if (forgotVM.forgetResponse != null) {
                                       ScaffoldMessenger.of(currentContext).showSnackBar(
                                         const SnackBar(
-                                          content: Text('Verification code resent successfully'),
+                                          content: Text(AppConstants.seVerCodeResentTxt),
                                           backgroundColor: AppTheme.successColor,
                                           behavior: SnackBarBehavior.floating,
                                           duration: Duration(seconds: 2),
@@ -242,9 +245,13 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                     return;
                                   }
 
-                                  final success = await forgotVM.verifyOtp(
-                                    widget.email,
-                                    otp,
+                                  final data = {
+                                    'email': widget.email,
+                                    'otp': otp,
+                                  };
+
+                                  await forgotVM.verifyOtp(
+                                  data: data
                                   );
 
                                   if (!mounted) return;
@@ -252,7 +259,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                   final currentContext = context;
                                   if (!currentContext.mounted) return;
 
-                                  if (success) {
+                                  if (forgotVM.verifyResponse != null) {
                                     ScaffoldMessenger.of(currentContext).showSnackBar(
                                       const SnackBar(
                                         content: Text('OTP verified successfully'),

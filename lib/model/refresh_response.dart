@@ -8,11 +8,11 @@ class RefreshResponse {
   RefreshResponse.fromJson(Map<String, dynamic> json) {
     rescode = json['rescode'];
     message = json['message'];
-    data = json['data'] != null ? new RefreshTokenData.fromJson(json['data']) : null;
+    data = json['data'] != null ? RefreshTokenData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data =  Map<String, dynamic>();
     data['rescode'] = this.rescode;
     data['message'] = this.message;
     if (this.data != null) {

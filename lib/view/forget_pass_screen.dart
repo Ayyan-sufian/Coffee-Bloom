@@ -31,6 +31,7 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final forgotVM = context.watch<ForgotViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -172,111 +173,103 @@ class _ForgetPassScreenState extends State<ForgetPassScreen> {
                 ),
               ),
               SizedBox(height: 50),
-              Consumer<ForgotViewModel>(
-                builder: (context, forgotVM, _) {
-                  return SizedBox(
-                    height: 60,
-                    child: ElevatedButton(
-                      onPressed: forgotVM.isLoading
-                          ? null
-                          : () async {
-                              if (!_formKey.currentState!.validate()) return;
+              SizedBox(
+                height: 60,
+                child: ElevatedButton(
+                  onPressed: forgotVM.isLoading
+                      ? null
+                      : () async {
+                          if (!_formKey.currentState!.validate()) return;
 
-                              final pass = passController.text.trim();
-                              final confirmPass = confirmPassController.text
-                                  .trim();
+                          final pass = passController.text.trim();
+                          final confirmPass = confirmPassController.text.trim();
 
-                              if (pass != confirmPass) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Passwords do not match'),
-                                    backgroundColor: AppTheme.errorColor,
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: Duration(seconds: 3),
-                                  ),
-                                );
-                                return;
-                              }
+                          if (pass != confirmPass) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text(AppConstants.passNotMatchTxt),
+                                backgroundColor: AppTheme.errorColor,
+                                behavior: SnackBarBehavior.floating,
+                                duration: Duration(seconds: 3),
+                              ),
+                            );
+                            return;
+                          }
 
-                              final success = await forgotVM.resetPass(
-                                widget.email,
-                                pass,
-                                confirmPass,
-                              );
+                          final data = {
+                            'email': widget.email,
+                            'password': pass,
+                            'confirm_password': confirmPass,
+                          };
 
-                              final currentContext = context;
-                              if (!currentContext.mounted) return;
+                           await forgotVM.resetPass(data: data);
 
-                              if (success) {
-                                ScaffoldMessenger.of(currentContext).showSnackBar(
-                                  const SnackBar(
-                                    content: Text(
-                                      'Password reset successfully',
-                                    ),
-                                    backgroundColor: AppTheme.successColor,
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
+                          final currentContext = context;
+                          if (!currentContext.mounted) return;
 
-                                Navigator.pushReplacement(
-                                  currentContext,
-                                  MaterialPageRoute(
-                                    builder: (_) => const LoginScreen(),
-                                  ),
-                                );
-                              } else {
-                                final currentContext = context;
-                                if (!currentContext.mounted) return;
-                                ScaffoldMessenger.of(currentContext).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      forgotVM.error ??
-                                          'Failed to reset password',
-                                    ),
-                                    backgroundColor: AppTheme.errorColor,
-                                    behavior: SnackBarBehavior.floating,
-                                    duration: const Duration(seconds: 3),
-                                  ),
-                                );
-                              }
-                            },
+                          if (forgotVM.resetPassResponse != null) {
+                            ScaffoldMessenger.of(currentContext).showSnackBar(
+                              const SnackBar(
+                                content: Text(AppConstants.fpPassResetSTxt),
+                                backgroundColor: AppTheme.successColor,
+                                behavior: SnackBarBehavior.floating,
+                                duration: Duration(seconds: 2),
+                              ),
+                            );
 
-                      child: forgotVM.isLoading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  AppTheme.secColor,
+                            Navigator.pushReplacement(
+                              currentContext,
+                              MaterialPageRoute(
+                                builder: (_) => const LoginScreen(),
+                              ),
+                            );
+                          } else {
+                            final currentContext = context;
+                            if (!currentContext.mounted) return;
+                            ScaffoldMessenger.of(currentContext).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  forgotVM.error ?? AppConstants.restPassFailedTxt,
                                 ),
+                                backgroundColor: AppTheme.errorColor,
+                                behavior: SnackBarBehavior.floating,
+                                duration: const Duration(seconds: 3),
                               ),
-                            )
-                          : Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.password,
-                                    color: AppTheme.secColor,
-                                    size: 25,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    AppConstants.fpSaveTxt,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyLarge!
-                                        .copyWith(color: AppTheme.secColor),
-                                  ),
-                                ],
-                              ),
+                            );
+                          }
+                        },
+
+                  child: forgotVM.isLoading
+                      ? const SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 2,
+                            valueColor: AlwaysStoppedAnimation<Color>(
+                              AppTheme.secColor,
                             ),
-                    ),
-                  );
-                },
+                          ),
+                        )
+                      : Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Icon(
+                                Icons.password,
+                                color: AppTheme.secColor,
+                                size: 25,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                AppConstants.fpSaveTxt,
+                                style: Theme.of(context).textTheme.bodyLarge!
+                                    .copyWith(color: AppTheme.secColor),
+                              ),
+                            ],
+                          ),
+                        ),
+                ),
               ),
             ],
           ),

@@ -10,11 +10,11 @@ class SignupResponse {
     rescode = json['rescode'];
     status = json['status'];
     message = json['message'];
-    data = json['data'] != null ? new SignUpData.fromJson(json['data']) : null;
+    data = json['data'] != null ? SignUpData.fromJson(json['data']) : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
+    final Map<String, dynamic> data = Map<String, dynamic>();
     data['rescode'] = this.rescode;
     data['status'] = this.status;
     data['message'] = this.message;

@@ -2,12 +2,10 @@ import 'package:coffee_bloom/helper/app_constants.dart';
 import 'package:coffee_bloom/model/login_response.dart';
 import 'package:coffee_bloom/model/refresh_response.dart';
 import 'package:coffee_bloom/model/signup_response.dart';
-import 'package:coffee_bloom/model/user_data.dart';
 import 'package:coffee_bloom/service/auth_api_service.dart';
 import 'package:coffee_bloom/service/auth_local_storage.dart';
 import 'package:coffee_bloom/view/login_screen.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AuthViewModel extends ChangeNotifier {

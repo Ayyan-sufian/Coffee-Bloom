@@ -6,7 +6,10 @@ import '../theme/app_theme.dart';
 class CustomCardId extends StatelessWidget {
   const CustomCardId({
     super.key,
-    required this.imgUrl, required this.name, required this.desc, required this.price,
+    required this.imgUrl,
+    required this.name,
+    required this.desc,
+    required this.price,
   });
 
   final String imgUrl;
@@ -16,9 +19,8 @@ class CustomCardId extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final img = AppConstants.imgBaseUrl+imgUrl;
+    final img = AppConstants.imgBaseUrl + imgUrl;
     return Container(
-      height: 320,
       width: 200,
       padding: EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
@@ -27,9 +29,9 @@ class CustomCardId extends StatelessWidget {
       ),
       child: Column(
         children: [
-          SizedBox(height: 12),
+          SizedBox(height: 10),
           Container(
-            height: 160,
+            height: 150,
             width: double.infinity,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -38,36 +40,36 @@ class CustomCardId extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.all(Radius.circular(20)),
               child: Image.network(
-              img,
-              width: 80,
-              height: 70,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Icon(
-                  Icons.category,
-                  size: 40,
-                  color: AppTheme.greyColor,
-                );
-              },
-                        ),
-            )
+                img,
+                width: 80,
+                height: 70,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Icon(
+                    Icons.category,
+                    size: 40,
+                    color: AppTheme.greyColor,
+                  );
+                },
+              ),
+            ),
           ),
           Column(
             crossAxisAlignment: .start,
             children: [
-              SizedBox(height: 5,),
+              SizedBox(height: 5),
               Text(
                 name,
-                style: Theme.of(context).textTheme.bodyLarge!
-                    .copyWith(
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                   fontWeight: FontWeight.bold,
                   color: AppTheme.textBlackColor,
                 ),
               ),
               Text(
                 desc,
-                style: Theme.of(context).textTheme.bodyMedium!
-                    .copyWith(color: AppTheme.greyColor),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium!.copyWith(color: AppTheme.greyColor),
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
               ),
@@ -76,8 +78,7 @@ class CustomCardId extends StatelessWidget {
                 children: [
                   Text(
                     "\$$price",
-                    style: Theme.of(context).textTheme.bodyLarge!
-                        .copyWith(
+                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                       fontWeight: FontWeight.bold,
                       color: AppTheme.textBlackColor,
                     ),
@@ -86,10 +87,7 @@ class CustomCardId extends StatelessWidget {
                     onPressed: () {},
                     icon: CircleAvatar(
                       backgroundColor: AppTheme.primaryColor,
-                      child: Icon(
-                        Icons.add,
-                        color: AppTheme.textWhiteColor,
-                      ),
+                      child: Icon(Icons.add, color: AppTheme.textWhiteColor),
                     ),
                   ),
                 ],
@@ -100,6 +98,4 @@ class CustomCardId extends StatelessWidget {
       ),
     );
   }
-
-
 }

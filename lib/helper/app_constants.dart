@@ -10,6 +10,8 @@ class AppConstants {
   static const String resetPassEnd = "/auth/resetPass";
   static const String categoryEnd = "/catagory/";
   static const String categoryIdEnd = "/coffees/catagory/";
+  static const String coffeeEnd = "/coffees/";
+
 
   /// Splash screen Text
   static const String splashTxt = "CoffeeBloom";
@@ -115,6 +117,8 @@ class AppConstants {
   static const String seContentTxt =
       "Enter your Email to receive password reset link";
   static const String seSendTxt = "Send email";
+  static const String seVerCodeSentTxt = "Verification code sent successfully";
+  static const String seVerCodeResentTxt = "Verification code resent successfully";
   static const String seRememberTxt = "Remember your password?";
 
   /// forget pass screen
@@ -125,8 +129,36 @@ class AppConstants {
   static const String fpEnterConfirmPassTxt = "Enter confirm Password";
   static const String fpConfirmPassTxt = "Confirm Password";
   static const String fpSaveTxt = "Save Password";
+  static const String fpPassResetSTxt = "Password reset successfully";
+  static const String coffeeScreenTxt = "Coffee Screen";
   static const String fpContentTxt =
       "Create a new Password to continue shopping";
+
+  /// Coffee main screen
+  static const String descriptionTxt = "Description";
+  static const String csSizeTxt = "Choose your size";
+  static const String csSmallTxt = "Small";
+  static const String csMedTxt = "Medium";
+  static const String csLargeTxt = "Large";
+  static const String csSmallOZTxt = "12 Oz";
+  static const String csMedOZTxt = "16 Oz";
+  static const String csLargeOZTxt = "18 Oz";
+  static const String csDChoiceTxt = "Dairy Choice";
+  static const String csAddCartTxt = "Add to cart";
+  static const String csWholeTxt = "Whole Milk";
+  static const String csAlmondTxt = "Almond Milk";
+  static const String csOatTxt = "Oat Milk";
+  static const String csWholePriceTxt = "\$0.57";
+  static const String csAlmondPriceTxt = "\$1.00";
+  static const String csOatPriceTxt = "\$1.25";
+  static const String csItemAddToCartTxt = "Item has been added to Cart";
+
+  /// errors text
+  static const String  restPassFailedTxt = "Reset password failed";
+  static const String  passNotMatchTxt = "Passwords do not match";
+  static const String  invalidResTxt = "Invalid response";
+  static const String  failedSendEmailTxt = "Failed to send email";
+
 }
 
 class ImagesPath {
@@ -144,4 +176,6 @@ class ImagesPath {
 
   /// Login screen image
   static const String loginImg = "assets/img/login_coffee.png";
+  static const String cupMBImg = "assets/img/cup_m_size.png";
+  static const String cupWhiteImg = "assets/img/cup_white.png";
 }

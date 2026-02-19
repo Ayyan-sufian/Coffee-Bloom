@@ -4,11 +4,11 @@ import 'package:dio/dio.dart';
 import '../helper/app_constants.dart';
 import '../helper/helper.dart';
 class ForgotApiService {
-  Future<Response> callSendEmailApi({required String email}) async {
+  Future<Response> callSendEmailApi({required Map<String, dynamic> data, required String endpoint}) async {
     try {
       final response = Global().dio.post(
-        AppConstants.forgotPassEnd,
-        data: {"email": email},
+        endpoint,
+        data: data,
       );
       return response;
     } on DioException catch (e) {
@@ -22,13 +22,13 @@ class ForgotApiService {
   }
 
   Future<Response> callVerifyApi({
-    required String email,
-    required String code,
+    required Map<String, dynamic> data,
+    required String endpoint,
   }) async {
     try {
       final response = await Global().dio.post(
-        AppConstants.verifyEnd,
-        data: {"email": email, "otp": code},
+        endpoint,
+        data: data,
       );
       return response;
     } on DioException catch (e) {
@@ -42,15 +42,11 @@ class ForgotApiService {
   }
 
   Future<Response> callResetPassApi(
-      {required String email, required String pass, required String confirmPass}) async {
+      {required Map<String, dynamic> data} ) async {
     try {
       final response = await Global().dio.post(
         AppConstants.resetPassEnd,
-        data: {
-          "email": email,
-          "password": pass,
-          "confirmPassword": confirmPass,
-        },
+        data: data,
       );
       return response;
     } on DioException catch (e) {

@@ -30,14 +30,11 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
     _screens = [
       const HomePageScreen(),
       FavouriteScreen(goBack: () => setState(() => _currentIndex = 0)),
-      const CategoryIdScreen(CateName: 'Cold coffee',),
+      const CategoryIdScreen(cateName: 'Cold coffee',id: '1',),
       const ProfileScreen(),
     ];
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final authVM = context.read<AuthViewModel>();
-      final token = await authVM.getAccessToken();
-      await context.read<CategoryViewModel>().fetchCategories(token!);
-      await context.read<CategoryViewModel>().fetchCategoryId(token, '2');
+      await context.read<CategoryViewModel>().init();
     });
   }
 

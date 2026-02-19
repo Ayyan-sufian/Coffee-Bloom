@@ -1,13 +1,15 @@
-import 'package:coffee_bloom/model/Category_id_model.dart';
+import 'package:coffee_bloom/model/category_id_model.dart';
 import 'package:coffee_bloom/model/category_model.dart';
+import 'package:coffee_bloom/model_view/auth_vm.dart';
 import 'package:coffee_bloom/service/category_api_service.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class CategoryViewModel extends ChangeNotifier {
   final CategoryApiService _apiService = CategoryApiService();
-
+final AuthViewModel _authVM = AuthViewModel();
   bool isLoading = false;
+  bool _initialized = false;
   String? error;
 
   /// List of category
@@ -16,30 +18,35 @@ class CategoryViewModel extends ChangeNotifier {
   /// List of category id
   List<CategoryIdData> categoryIdList = [];
 
+  /// call function
+  Future<void> init() async {
+    if (_initialized) return;
+    _initialized = true;
+
+    await fetchCategories();
+  }
+
+
   /// Function of category
-  Future<void> fetchCategories(String token) async {
+  Future<void> fetchCategories() async {
     isLoading = true;
     error = null;
     notifyListeners();
 
     try {
+      final token = await _authVM.getAccessToken();
+
+      if (token == null) return;
+
       final response = await _apiService.callCategoryApi(token: token);
 
-      if (response.statusCode != 200 || response.statusCode == 201) {
-        throw Exception(
-          'Error ${response.statusCode}: ${response.statusMessage}',
-        );
-      }
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        final parse = CategoryModel.fromJson(response.data);
 
-      final List list = response.data['data'];
+        categoryList.clear();
 
-      categoryList.clear();
+        categoryList = parse.data ?? [];
 
-      for (final item in list) {
-        if (item is Map<String, dynamic>) {
-          var result = CategoryData.fromJson(item);
-          categoryList.add(result);
-        }
       }
     } on DioException catch (e) {
       error = e.response?.data?['message'] ?? 'Network error';
@@ -58,6 +65,10 @@ class CategoryViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
+      final token = await _authVM.getAccessToken();
+
+      if (token == null) return;
+
       final response = await _apiService.callCategoryIdApi(
         token: token,
         id: id,

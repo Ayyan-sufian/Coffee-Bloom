@@ -225,7 +225,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                             duration: const Duration(seconds: 3),
                                           ),
                                         );
-                                      }
+                                      }ScaffoldMessenger.of(currentContext).showSnackBar(
+                                        SnackBar(
+                                          content: Text(authVM.message!),
+                                          backgroundColor: AppTheme.errorColor,
+                                          behavior: SnackBarBehavior.floating,
+                                          duration: const Duration(seconds: 3),
+                                        ),
+                                      );
                                     }
                                   },
                             child: Padding(
