@@ -51,7 +51,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
         child: Column(
           children: [
             SizedBox(
-              height: size.height * 0.8,width: size.height,
+              height: size.height * 0.8,width: double.infinity,
               child: Stack(
                 clipBehavior: Clip.none,
                 children: [

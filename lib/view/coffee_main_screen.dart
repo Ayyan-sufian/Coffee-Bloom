@@ -3,7 +3,6 @@ import 'package:coffee_bloom/model_view/coffee_view_model.dart';
 import 'package:coffee_bloom/view/theme/app_theme.dart';
 import 'package:coffee_bloom/view/widgets/custom_addcart_sheet.dart';
 import 'package:coffee_bloom/view/widgets/custom_coffee_card.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
@@ -199,7 +198,7 @@ class _CoffeeMainScreenState extends State<CoffeeMainScreen> {
                                         setState(
                                           () => isWholeChecked = value ?? false,
                                         );
-                                      },
+                                       },
                                     ),
                                     Text(AppConstants.csWholeTxt),
                                     const Spacer(),
@@ -253,10 +252,20 @@ class _CoffeeMainScreenState extends State<CoffeeMainScreen> {
                             height: 48,
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: () {
+                              onPressed: () async {
+
+                                final Map<String, dynamic> data = {
+                                  'coffee_id': coffee.coffeeId,
+                                  'coffee_name': coffee.coffeeName,
+                                  'coffee_desc': coffee.coffeeDescription,
+                                  'price': coffee.coffeePrice,
+                                  'coffee_img': coffee.imageUrl,
+                                  'quantity': 1
+                                };
+
                                 showDialog(
                                   context: context,
-                                  builder: (_) => const AddToCartSheet(),
+                                  builder: (_) => AddToCartSheet(item: data,),
                                 );
                               },
                               child: Text(

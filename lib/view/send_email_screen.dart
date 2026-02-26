@@ -28,6 +28,7 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final forgotVM = context.read<ForgotViewModel>();
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -87,9 +88,7 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                 ),
               ),
               SizedBox(height: 40),
-              Consumer<ForgotViewModel>(
-                builder: (context, forgotVM, _) {
-                  return SizedBox(
+               SizedBox(
                     height: 60,
                     child: ElevatedButton(
                       onPressed: forgotVM.isLoading
@@ -172,9 +171,7 @@ class _SendEmailScreenState extends State<SendEmailScreen> {
                               ),
                             ),
                     ),
-                  );
-                },
-              ),
+                  ),
               SizedBox(height: 30),
               Row(
                 children: [

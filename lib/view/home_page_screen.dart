@@ -49,21 +49,25 @@ class _HomePageScreenState extends State<HomePageScreen> {
   final List<Map<String, dynamic>> coffeeList2 = [
     {
       'img': ImagesPath.coffee2Img,
+      "name": "Cold coffee frapuccino",
       'title': AppConstants.hpHotCoffeeTxt,
       'price': "3.92",
     },
     {
       'img': ImagesPath.coffee1Img,
+      "name": "Cold coffee frapuccino",
       'title': AppConstants.hpHotCoffeeTxt,
       'price': "4.35",
     },
     {
       'img': ImagesPath.obCoffeeImg,
+      'name': "Cold coffee frapuccino",
       'title': AppConstants.hpHotCoffeeTxt,
       'price': "2.67",
     },
     {
       'img': ImagesPath.obCoffeeImg,
+      'name': "Cold coffee frapuccino",
       'title': AppConstants.hpHotCoffeeTxt,
       'price': "2.67",
     },

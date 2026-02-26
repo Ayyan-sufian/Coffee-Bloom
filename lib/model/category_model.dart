@@ -19,10 +19,10 @@ class CategoryModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['rescode'] = this.rescode;
-    data['status'] = this.status;
-    data['message'] = this.message;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['rescode'] = rescode;
+    data['status'] = status;
+    data['message'] = message;
     if (this.data != null) {
       data['data'] = this.data!.map((v) => v.toJson()).toList();
     }
@@ -50,11 +50,11 @@ class CategoryData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['coffee_catagory_id'] = this.coffeeCatagoryId;
-    data['coffee_catagory_name'] = this.coffeeCatagoryName;
-    data['description'] = this.description;
-    data['image_url'] = this.imageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['coffee_catagory_id'] = coffeeCatagoryId;
+    data['coffee_catagory_name'] = coffeeCatagoryName;
+    data['description'] = description;
+    data['image_url'] = imageUrl;
     return data;
   }
 }

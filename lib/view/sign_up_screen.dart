@@ -44,6 +44,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authVM = context.read<AuthViewModel>();
     return Scaffold(
       body: SafeArea(
         bottom: false,
@@ -282,80 +283,82 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   ),
                   SizedBox(height: 50),
-                  Consumer<AuthViewModel>(
-                    builder: (context, authVM, _) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: authVM.isLoading
-                              ? null
-                              : () async {
-                                  showError();
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: authVM.isLoading
+                          ? null
+                          : () async {
+                              showError();
 
-                                  if (isError != true &&
-                                      _form.currentState!.validate()) {
-                                    final data = {
-                                      "name": nameController.text.trim(),
-                                      "email": emailController.text.trim(),
-                                      "password": passController.text.trim(),
-                                      "confirm_password": confirmPassController.text
-                                          .trim(),
-                                      "address": addressController.text.trim(),
-                                    };
-                                    await authVM.signUp( data: data,);
+                              if (isError != true &&
+                                  _form.currentState!.validate()) {
+                                final data = {
+                                  "name": nameController.text.trim(),
+                                  "email": emailController.text.trim(),
+                                  "password": passController.text.trim(),
+                                  "confirm_password": confirmPassController.text
+                                      .trim(),
+                                  "address": addressController.text.trim(),
+                                };
+                                await authVM.signUp(data: data);
 
-                                    final currentContext = context;
-                                    if (!currentContext.mounted) return;
+                                final currentContext = context;
+                                if (!currentContext.mounted) return;
 
-                                    if (authVM.signupResponse != null) {
-                                      ScaffoldMessenger.of(currentContext).showSnackBar(
-                                        const SnackBar(
-                                          content: Text('Sign up successful'),
-                                          backgroundColor: AppTheme.successColor,
-                                          behavior: SnackBarBehavior.floating,
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      );
-                                      Navigator.pushReplacement(
-                                        currentContext,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              const HomeNavScreen(),
-                                        ),
-                                      );
-                                    } else if (authVM.message != null) {
-                                      ScaffoldMessenger.of(currentContext).showSnackBar(
-                                        SnackBar(
-                                          content: Text(authVM.message!),
-                                          backgroundColor: AppTheme.errorColor,
-                                          behavior: SnackBarBehavior.floating,
-                                          duration: const Duration(seconds: 3),
-                                        ),
-                                      );
-                                    }
-                                  }
-                                },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: authVM.isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secColor),
+                                if (authVM.signupResponse != null) {
+                                  ScaffoldMessenger.of(
+                                    currentContext,
+                                  ).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Sign up successful'),
+                                      backgroundColor: AppTheme.successColor,
+                                      behavior: SnackBarBehavior.floating,
+                                      duration: Duration(seconds: 2),
                                     ),
-                                  )
-                                : Text(
-                                    AppConstants.msContinueTxt,
-                                    style: Theme.of(
-                                      context,
-                                    ).textTheme.headlineSmall,
+                                  );
+                                  Navigator.pushReplacement(
+                                    currentContext,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const HomeNavScreen(),
+                                    ),
+                                  );
+                                } else if (authVM.message != null) {
+                                  ScaffoldMessenger.of(
+                                    currentContext,
+                                  ).showSnackBar(
+                                    SnackBar(
+                                      content: Text(authVM.message!),
+                                      backgroundColor: AppTheme.errorColor,
+                                      behavior: SnackBarBehavior.floating,
+                                      duration: const Duration(seconds: 3),
+                                    ),
+                                  );
+                                }
+                              }
+                            },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: authVM.isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppTheme.secColor,
                                   ),
-                          ),
-                        ),
-                      );
-                    },
+                                ),
+                              )
+                            : Text(
+                                AppConstants.msContinueTxt,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineSmall,
+                              ),
+                      ),
+                    ),
                   ),
                 ],
               ),

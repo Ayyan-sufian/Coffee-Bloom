@@ -49,6 +49,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final forgotVM = context.read<ForgotViewModel>();
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -94,9 +95,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   SizedBox(height: 12),
                   Text(
                     AppConstants.vsEnterCodeTxt,
-                    style: Theme.of(context).textTheme.bodyLarge!.copyWith(
-                      color: AppTheme.greyColor,
-                    ),
+                    style: Theme.of(
+                      context,
+                    ).textTheme.bodyLarge!.copyWith(color: AppTheme.greyColor),
                   ),
                   SizedBox(height: 12),
                   Pinput(
@@ -163,7 +164,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       padding: const EdgeInsets.only(top: 8),
                       child: Text(
                         otpError!,
-                        style: const TextStyle(color: AppTheme.errorColor, fontSize: 12),
+                        style: const TextStyle(
+                          color: AppTheme.errorColor,
+                          fontSize: 12,
+                        ),
                       ),
                     ),
                   SizedBox(height: 12),
@@ -174,141 +178,141 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         AppConstants.vsDidntGetTxt,
                         style: Theme.of(context).textTheme.bodySmall,
                       ),
-                      Consumer<ForgotViewModel>(
-                        builder: (context, forgotVM, _) {
-                          return TextButton(
-                            onPressed: forgotVM.isLoading
-                                ? null
-                                : () async {
-                              final data = {
-                                'email': widget.email,
-                              };
-                                    await forgotVM.sendEmail(data: data);
-                                    
-                                    final currentContext = context;
-                                    if (!currentContext.mounted) return;
-                                    
-                                    if (forgotVM.forgetResponse != null) {
-                                      ScaffoldMessenger.of(currentContext).showSnackBar(
-                                        const SnackBar(
-                                          content: Text(AppConstants.seVerCodeResentTxt),
-                                          backgroundColor: AppTheme.successColor,
-                                          behavior: SnackBarBehavior.floating,
-                                          duration: Duration(seconds: 2),
-                                        ),
-                                      );
-                                    } else {
-                                      final errorMessage =
-                                          forgotVM.error ?? 'Failed to resend code';
-                                      
-                                      ScaffoldMessenger.of(currentContext).showSnackBar(
-                                        SnackBar(
-                                          content: Text(errorMessage),
-                                          backgroundColor: AppTheme.errorColor,
-                                          behavior: SnackBarBehavior.floating,
-                                          duration: const Duration(seconds: 3),
-                                        ),
-                                      );
-                                    }
-                                  },
-                            child: forgotVM.isLoading
-                                ? const SizedBox(
-                                    height: 16,
-                                    width: 16,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.greyColor),
+                      TextButton(
+                        onPressed: forgotVM.isLoading
+                            ? null
+                            : () async {
+                                final data = {'email': widget.email};
+                                await forgotVM.sendEmail(data: data);
+
+                                final currentContext = context;
+                                if (!currentContext.mounted) return;
+
+                                if (forgotVM.forgetResponse != null) {
+                                  ScaffoldMessenger.of(
+                                    currentContext,
+                                  ).showSnackBar(
+                                    const SnackBar(
+                                      content: Text(
+                                        AppConstants.seVerCodeResentTxt,
+                                      ),
+                                      backgroundColor: AppTheme.successColor,
+                                      behavior: SnackBarBehavior.floating,
+                                      duration: Duration(seconds: 2),
                                     ),
-                                  )
-                                : Text(
-                                    AppConstants.vsResendCodeTxt,
-                                    style: Theme.of(context).textTheme.bodySmall!
-                                        .copyWith(color: AppTheme.primaryColor),
+                                  );
+                                } else {
+                                  final errorMessage =
+                                      forgotVM.error ?? 'Failed to resend code';
+
+                                  ScaffoldMessenger.of(
+                                    currentContext,
+                                  ).showSnackBar(
+                                    SnackBar(
+                                      content: Text(errorMessage),
+                                      backgroundColor: AppTheme.errorColor,
+                                      behavior: SnackBarBehavior.floating,
+                                      duration: const Duration(seconds: 3),
+                                    ),
+                                  );
+                                }
+                              },
+                        child: forgotVM.isLoading
+                            ? const SizedBox(
+                                height: 16,
+                                width: 16,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppTheme.greyColor,
                                   ),
-                          );
-                        },
+                                ),
+                              )
+                            : Text(
+                                AppConstants.vsResendCodeTxt,
+                                style: Theme.of(context).textTheme.bodySmall!
+                                    .copyWith(color: AppTheme.primaryColor),
+                              ),
                       ),
                     ],
                   ),
                   SizedBox(height: 12),
-                  Consumer<ForgotViewModel>(
-                    builder: (context, forgotVM, _) {
-                      return SizedBox(
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: forgotVM.isLoading
-                              ? null
-                              : () async {
-                                  final otp = otpController.text.trim();
-                                  
-                                  if (!_validateOtp(otp)) {
-                                    return;
-                                  }
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: forgotVM.isLoading
+                          ? null
+                          : () async {
+                              final otp = otpController.text.trim();
 
-                                  final data = {
-                                    'email': widget.email,
-                                    'otp': otp,
-                                  };
+                              if (!_validateOtp(otp)) {
+                                return;
+                              }
 
-                                  await forgotVM.verifyOtp(
-                                  data: data
-                                  );
+                              final data = {'email': widget.email, 'otp': otp};
 
-                                  if (!mounted) return;
+                              await forgotVM.verifyOtp(data: data);
 
-                                  final currentContext = context;
-                                  if (!currentContext.mounted) return;
+                              if (!mounted) return;
 
-                                  if (forgotVM.verifyResponse != null) {
-                                    ScaffoldMessenger.of(currentContext).showSnackBar(
-                                      const SnackBar(
-                                        content: Text('OTP verified successfully'),
-                                        backgroundColor: AppTheme.successColor,
-                                        behavior: SnackBarBehavior.floating,
-                                        duration: Duration(seconds: 2),
-                                      ),
-                                    );
-                                    Navigator.pushReplacement(
-                                      currentContext,
-                                      MaterialPageRoute(
-                                        builder: (context) => ForgetPassScreen(
-                                          email: widget.email,
-                                        ),
-                                      ),
-                                    );
-                                  } else {
-                                    final errorMessage =
-                                        forgotVM.error ?? 'Invalid OTP';
+                              final currentContext = context;
+                              if (!currentContext.mounted) return;
 
-                                    ScaffoldMessenger.of(currentContext).showSnackBar(
-                                      SnackBar(
-                                        content: Text(errorMessage),
-                                        backgroundColor: AppTheme.errorColor,
-                                        behavior: SnackBarBehavior.floating,
-                                        duration: const Duration(seconds: 3),
-                                      ),
-                                    );
-                                  }
-                                },
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 12),
-                            child: forgotVM.isLoading
-                                ? const SizedBox(
-                                    height: 20,
-                                    width: 20,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2,
-                                      valueColor: AlwaysStoppedAnimation<Color>(AppTheme.secColor),
-                                    ),
-                                  )
-                                : Text(
-                                    AppConstants.msContinueTxt,
-                                    style: Theme.of(context).textTheme.headlineSmall,
+                              if (forgotVM.verifyResponse != null) {
+                                ScaffoldMessenger.of(
+                                  currentContext,
+                                ).showSnackBar(
+                                  const SnackBar(
+                                    content: Text('OTP verified successfully'),
+                                    backgroundColor: AppTheme.successColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: Duration(seconds: 2),
                                   ),
-                          ),
-                        ),
-                      );
-                    },
+                                );
+                                Navigator.pushReplacement(
+                                  currentContext,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        ForgetPassScreen(email: widget.email),
+                                  ),
+                                );
+                              } else {
+                                final errorMessage =
+                                    forgotVM.error ?? 'Invalid OTP';
+
+                                ScaffoldMessenger.of(
+                                  currentContext,
+                                ).showSnackBar(
+                                  SnackBar(
+                                    content: Text(errorMessage),
+                                    backgroundColor: AppTheme.errorColor,
+                                    behavior: SnackBarBehavior.floating,
+                                    duration: const Duration(seconds: 3),
+                                  ),
+                                );
+                              }
+                            },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        child: forgotVM.isLoading
+                            ? const SizedBox(
+                                height: 20,
+                                width: 20,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    AppTheme.secColor,
+                                  ),
+                                ),
+                              )
+                            : Text(
+                                AppConstants.msContinueTxt,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.headlineSmall,
+                              ),
+                      ),
+                    ),
                   ),
                   Spacer(),
                 ],

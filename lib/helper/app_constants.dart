@@ -11,6 +11,8 @@ class AppConstants {
   static const String categoryEnd = "/catagory/";
   static const String categoryIdEnd = "/coffees/catagory/";
   static const String coffeeEnd = "/coffees/";
+  static const String orderListEnd = "/orders/";
+  static const String favListEnd = "/favorites/";
 
 
   /// Splash screen Text
@@ -159,6 +161,14 @@ class AppConstants {
   static const String  invalidResTxt = "Invalid response";
   static const String  failedSendEmailTxt = "Failed to send email";
 
+  /// cart screen text
+  static const String csCartTxt = "Your cart";
+  static const String csDiscountTxt = "Discount Coupon";
+  static const String csPromoCodeTxt = "Promo code";
+  static const String csApplyTxt = "Apply";
+  static const String csSubtotalTxt = "Subtotal";
+  static const String csDeliveryFeeTxt = "Delivery fee";
+  static const String csTotalTxt = "Total";
 }
 
 class ImagesPath {

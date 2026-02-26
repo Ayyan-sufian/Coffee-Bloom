@@ -1,4 +1,4 @@
-import 'package:coffee_bloom/view/category_id_screen.dart';
+import 'package:coffee_bloom/view/cart_screen.dart';
 import 'package:coffee_bloom/view/favourite_screen.dart';
 import 'package:coffee_bloom/view/home_page_screen.dart';
 import 'package:coffee_bloom/view/login_screen.dart';
@@ -30,7 +30,7 @@ class _HomeNavScreenState extends State<HomeNavScreen> {
     _screens = [
       const HomePageScreen(),
       FavouriteScreen(goBack: () => setState(() => _currentIndex = 0)),
-      const CategoryIdScreen(cateName: 'Cold coffee',id: '1',),
+      const CartScreen(item: {},),
       const ProfileScreen(),
     ];
     WidgetsBinding.instance.addPostFrameCallback((_) async {

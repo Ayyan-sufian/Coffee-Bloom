@@ -17,17 +17,6 @@ class CategoryIdModel {
       });
     }
   }
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data =  Map<String, dynamic>();
-    data['rescode'] = this.rescode;
-    data['status'] = this.status;
-    data['message'] = this.message;
-    if (this.data != null) {
-      data['data'] = this.data!.map((v) => v.toJson()).toList();
-    }
-    return data;
-  }
 }
 
 class CategoryIdData {
@@ -65,16 +54,16 @@ class CategoryIdData {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['coffee_id'] = this.coffeeId;
-    data['coffee_name'] = this.coffeeName;
-    data['coffee_description'] = this.coffeeDescription;
-    data['coffee_price'] = this.coffeePrice;
-    data['rating'] = this.rating;
-    data['status'] = this.status;
-    data['coffee_catagory_id'] = this.coffeeCatagoryId;
-    data['coffee_catagory_name'] = this.coffeeCatagoryName;
-    data['image_url'] = this.imageUrl;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['coffee_id'] = coffeeId;
+    data['coffee_name'] = coffeeName;
+    data['coffee_description'] = coffeeDescription;
+    data['coffee_price'] = coffeePrice;
+    data['rating'] = rating;
+    data['status'] = status;
+    data['coffee_catagory_id'] = coffeeCatagoryId;
+    data['coffee_catagory_name'] = coffeeCatagoryName;
+    data['image_url'] = imageUrl;
     return data;
   }
 }

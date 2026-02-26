@@ -1,10 +1,12 @@
 import 'package:coffee_bloom/helper/app_constants.dart';
+import 'package:coffee_bloom/view/cart_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../theme/app_theme.dart';
 
 class AddToCartSheet extends StatelessWidget {
-  const AddToCartSheet({super.key});
+  final Map<String, dynamic> item;
+  const AddToCartSheet({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -70,7 +72,7 @@ class AddToCartSheet extends StatelessWidget {
               height: 48,
               child: OutlinedButton(
                 onPressed: () {
-                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => CartScreen(item: item,),));
                 },
                 style: OutlinedButton.styleFrom(
                   shape: RoundedRectangleBorder(
